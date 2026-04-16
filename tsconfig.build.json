@@ -1,0 +1,54 @@
+// tsconfig.build.json
+{
+  "extends": "./tsconfig.json",
+  
+  "compilerOptions": {
+    "composite": true,
+    /* 生产环境优化 */
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    
+    /* 输出配置（只输出 JS，不输出测试文件） */
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "./dist/types",
+    "sourceMap": true,
+    
+    /* 严格检查（不允许任何类型错误） */
+    "noEmitOnError": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    
+    /* 移除注释和调试信息 */
+    "removeComments": true,
+
+    
+    /* 跳过类型检查以加快构建 */
+    "skipLibCheck": true,
+    
+    /* 不引用测试文件 */
+    "types": ["node"]
+  },
+  
+  /* 仅构建 src 目录 */
+  "include": ["src/**/*"],
+  
+  /* 排除测试和非必要文件 */
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests",
+    "examples",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/__mocks__/*",
+    "**/__tests__/*"
+  ],
+  
+  /* 不需要引用，这是最终配置 */
+  "references": []
+}

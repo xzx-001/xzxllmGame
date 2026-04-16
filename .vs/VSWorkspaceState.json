@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\core",
+    "\\src\\core\\config",
+    "\\src\\core\\interfaces"
+  ],
+  "SelectedNode": "\\tsconfig.build.json",
+  "PreviewInSolutionExplorer": false
+}

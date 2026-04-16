@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@core/*": ["./src/core/*"],
+      "@llm/*": ["./src/llm/*"],
+      "@generation/*": ["./src/generation/*"],
+      "@memory/*": ["./src/memory/*"],
+      "@api/*": ["./src/api/*"],
+      "@utils/*": ["./src/utils/*"]
+    }
+  }
+}

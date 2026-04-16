@@ -1,0 +1,85 @@
+// tsconfig.json
+{
+  "compilerOptions": {
+    /* 基础编译选项 */
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    
+    /* 输出配置 */
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "removeComments": false,
+    
+    /* 模块解析 */
+    "paths": {
+      "@/*": ["./src/*"],
+      "@core/*": ["./src/core/*"],
+      "@llm/*": ["./src/llm/*"],
+      "@generation/*": ["./src/generation/*"],
+      "@memory/*": ["./src/memory/*"],
+      "@api/*": ["./src/api/*"],
+      "@utils/*": ["./src/utils/*"]
+    },
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    
+    /* 类型检查（严格模式） */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    
+    /* 额外检查（代码质量） */
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    
+    /* 实验性特性 */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    
+    /* 跳过库类型检查（避免 node_modules 报错） */
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    
+    /* 现代模块特性 */
+    "isolatedModules": true,
+    "allowArbitraryExtensions": true,
+    
+    /* 类型根目录 */
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
+  
+  /* 包含的文件 */
+  "include": [
+    "src/**/*"
+  ],
+  
+  /* 排除的文件 */
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests/**/*",
+    "examples/**/*",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ],
+  
+  /* 引用其他配置（测试、构建） */
+  "references": [
+    { "path": "./tsconfig.build.json" }
+  ]
+}

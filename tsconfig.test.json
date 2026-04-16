@@ -1,0 +1,35 @@
+// tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    /* 测试环境允许宽松一些 */
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noEmitOnError": false,
+    
+    /* 输出到测试目录 */
+    "outDir": "./dist-test",
+    
+    /* 包含测试类型 */
+    "types": ["node", "jest", "mocha", "chai"],
+    
+    /* 支持测试文件中的全局变量 */
+    "lib": ["ES2022", "DOM"]
+  },
+  
+  /* 包含测试文件 */
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ],
+  
+  "exclude": [
+    "node_modules",
+    "dist",
+    "examples",
+    "dist-test"
+  ]
+}
