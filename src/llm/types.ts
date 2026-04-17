@@ -280,54 +280,54 @@ export interface LLMConfig {
    * - 自定义: https://api.example.com/v1
    * - OpenAI/Anthropic: 使用默认值，无需设置
    */
-  baseUrl?: string;
+  baseUrl?: string | undefined;
   
   /** 
    * API 密钥（云提供商必需）
    * 从环境变量 LLM_API_KEY 或 OPENAI_API_KEY 读取也可
    */
-  apiKey?: string;
+  apiKey?: string | undefined;
   
   /** 
    * 本地模型专用配置
    * 仅当 provider='local' 时有效
    */
   localOptions?: {
-    /** 模型文件路径（.gguf 格式） */
-    modelPath: string;
-    /** GPU 层数（0=纯 CPU，20=全部 GPU） */
-    gpuLayers?: number;
-    /** 上下文窗口大小（默认 4096） */
-    contextSize?: number;
-    /** CPU 线程数（默认 4） */
-    threads?: number;
-    /** 是否使用内存映射（大模型建议开启） */
-    useMmap?: boolean;
-    /** 是否锁定内存（防止交换） */
-    useMlock?: boolean;
-  };
+  /** 模型文件路径（.gguf 格式） */
+  modelPath: string;
+  /** GPU 层数（0=纯 CPU，20=全部 GPU） */
+  gpuLayers?: number;
+  /** 上下文窗口大小（默认 4096） */
+  contextSize?: number;
+  /** CPU 线程数（默认 4） */
+  threads?: number;
+  /** 是否使用内存映射（大模型建议开启） */
+  useMmap?: boolean;
+  /** 是否锁定内存（防止交换） */
+  useMlock?: boolean;
+} | undefined;
   
   /** 默认请求超时（毫秒） */
-  timeout?: number;
+  timeout?: number | undefined;
   
   /** 失败重试次数（默认 3） */
-  retryAttempts?: number;
+  retryAttempts?: number | undefined;
   
   /** 默认生成参数 */
   defaults?: {
-    temperature?: number;
-    maxTokens?: number;
-    topP?: number;
-    repeatPenalty?: number;
-  };
+  temperature?: number;
+  maxTokens?: number;
+  topP?: number;
+  repeatPenalty?: number;
+} | undefined;
   
   /** 流式响应配置（如果支持） */
   streaming?: {
-    /** 是否默认启用流式 */
-    enabled: boolean;
-    /** 流式块大小（字符数） */
-    chunkSize?: number;
-  };
+  /** 是否默认启用流式 */
+  enabled: boolean;
+  /** 流式块大小（字符数） */
+  chunkSize?: number;
+} | undefined;
 }
 
 /**

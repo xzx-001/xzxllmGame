@@ -20,6 +20,8 @@
     "vitest": "^1.0.0"
   },
   "dependencies": {
-    "commander": "^11.0.0"
+    "@types/ioredis": "^4.28.10",
+    "commander": "^11.0.0",
+    "ioredis": "^5.10.1"
   }
 }

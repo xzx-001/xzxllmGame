@@ -367,6 +367,8 @@ export interface DialogueObservation {
   id?: number;
   /** 所属会话 */
   sessionId: string;
+  /** 玩家 ID（关联玩家画像） */
+  playerId: string;
   /** 观察类型 */
   observationType: ObservationType;
   /** 观察摘要（LLM 处理后的结论） */

@@ -249,7 +249,7 @@ export class XZXLLMGameEngine extends EventEmitter {
     
     if (puzzle) {
       this.emit('level:consumed', { sessionId, levelId: (puzzle as any).metadata?.id });
-      return puzzle as LevelStructure;
+      return puzzle as unknown as LevelStructure;
     }
     
     return null;
