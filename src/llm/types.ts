@@ -97,6 +97,7 @@ export interface TokenUsage {
  * LLM 响应结构
  */
 export interface LLMResponse {
+  text: string | PromiseLike<string>;
   /** 
    * 生成的文本内容
    * 如果出错或过滤，可能为空
