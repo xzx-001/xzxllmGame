@@ -6,6 +6,10 @@
 </p>
 
 <p align="center">
+  <b>🇨🇳 中文</b> | <a href="./README.md">🇬🇧 English</a>
+</p>
+
+<p align="center">
   <a href="#-核心特性">核心特性</a> •
   <a href="#-架构设计">架构设计</a> •
   <a href="#-快速开始">快速开始</a> •

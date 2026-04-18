@@ -6,6 +6,10 @@
 </p>
 
 <p align="center">
+  <a href="./README.zh-CN.md">🇨🇳 中文</a> | <b>🇬🇧 English</b>
+</p>
+
+<p align="center">
   <a href="#-core-features">Core Features</a> •
   <a href="#-architecture">Architecture</a> •
   <a href="#-quick-start">Quick Start</a> •
