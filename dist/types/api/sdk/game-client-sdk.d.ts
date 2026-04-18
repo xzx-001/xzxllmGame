@@ -1,0 +1,44 @@
+import type { SDKConfig, SDKEventCallback, LevelGenerationOptions, PlayerSession, LevelResult, GenerationStatus, SDKStats, LevelStructure, PlayerProfile, HealthStatus } from './types.js';
+import { SDKEvent } from './types.js';
+export declare class GameClientSDK {
+    private config;
+    private currentSession;
+    private ws;
+    private reconnectTimer;
+    private eventListeners;
+    private cache;
+    private readonly CACHE_TTL;
+    private stats;
+    private responseTimes;
+    private generationStatus;
+    constructor(config: SDKConfig);
+    initialize(): Promise<void>;
+    requestLevel(playerId: string, sessionId: string, options?: LevelGenerationOptions): Promise<LevelStructure>;
+    getBufferedLevel(sessionId: string): Promise<LevelStructure | null>;
+    submitLevelResult(result: LevelResult): Promise<boolean>;
+    getPlayerProfile(playerId?: string): Promise<PlayerProfile | null>;
+    updatePlayerProfile(updates: Partial<PlayerProfile>, playerId?: string): Promise<void>;
+    getPlayerHistory(playerId?: string, limit?: number): Promise<LevelResult[]>;
+    healthCheck(): Promise<HealthStatus>;
+    on<T = any>(event: SDKEvent, callback: SDKEventCallback<T>): () => void;
+    off<T = any>(event: SDKEvent, callback?: SDKEventCallback<T>): void;
+    private emit;
+    private connectWebSocket;
+    private handleWebSocketMessage;
+    private scheduleReconnect;
+    subscribeToSession(sessionId: string): void;
+    private request;
+    getGenerationStatus(): GenerationStatus;
+    getStats(): SDKStats;
+    clearCache(): void;
+    getCurrentSession(): PlayerSession | null;
+    dispose(): Promise<void>;
+    private recordResponseTime;
+    private updateCacheStats;
+    private log;
+    private sleep;
+    private ensureInitialized;
+}
+export declare function createSDK(config: SDKConfig): GameClientSDK;
+export default GameClientSDK;
+//# sourceMappingURL=game-client-sdk.d.ts.map

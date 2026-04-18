@@ -220,8 +220,9 @@ xzxllmGame/
 │   │
 │   ├── 📁 api/                          # 对外接口层 —— "对外窗口"
 │   │   ├── 📁 sdk/                      # 游戏客户端 SDK（TypeScript/JavaScript 项目直接引入）
-│   │   │   ├── game-client-sdk.ts       # [待实现] 主 SDK 类（空文件）
-│   │   │   ├── types.ts                 # [待实现] SDK 专属类型定义（空文件）
+│   │   │   ├── game-client-sdk.ts       # 主 SDK 类（776 行，完整实现）✅
+│   │   │   ├── types.ts                 # SDK 专属类型定义（372 行）✅
+│   │   │   ├── index.ts                 # SDK 模块入口（58 行）✅
 │   │   │   └── adapters/                # 游戏引擎适配器
 │   │   │       ├── unity-adapter.ts     # Unity C# 项目适配辅助
 │   │   │       └── unreal-adapter.ts    # Unreal Engine 适配辅助
