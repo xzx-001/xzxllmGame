@@ -29,20 +29,17 @@ import {
   PlayerProfile,
   NarrativeState,
   AIMood,
-  RelationshipStage,
-  GenerationResult,
-  DialogueObservation
+  DialogueObservation,
+  ObservationType
 } from './interfaces/base.types.js';
 import { 
   LevelGenerationParams, 
-  GenerationProgress,
-  SDKConfig 
+  GenerationProgress
 } from './interfaces/api.types.js';
 
 // 服务接口（实际实现由其他模块提供）
 import { ILLMProvider, LLMConfig } from '../llm/types.js';
 import { StorageAdapter } from '../memory/storage/base-storage.js';
-import { IMiniGameGenerator, MiniGameContext } from '../generation/minigame/types.js';
 
 /**
  * 引擎配置接口
@@ -208,8 +205,7 @@ export class XZXLLMGameEngine extends EventEmitter {
   async generateLevel(params: LevelGenerationParams): Promise<LevelStructure> {
     this.ensureInitialized();
     
-    const startTime = Date.now();
-    const { playerId, sessionId } = params;
+    const { sessionId } = params;
 
     try {
       // 检查是否已有进行中的生成（防止重复请求）
@@ -264,7 +260,7 @@ export class XZXLLMGameEngine extends EventEmitter {
   async submitFeedback(
     sessionId: string,
     feedback: {
-      type: 'sentiment' | 'strategy' | 'frustration' | 'completion';
+      type: ObservationType;
       content: string;
       rawQuote?: string;
       importance?: number;
@@ -280,9 +276,8 @@ export class XZXLLMGameEngine extends EventEmitter {
       sessionId,
       observationType: feedback.type,
       content: feedback.content,
-      rawQuote: feedback.rawQuote,
       importance: feedback.importance || 5,
-      processed: false
+      ...(feedback.rawQuote !== undefined ? { rawQuote: feedback.rawQuote } : {})
     });
 
     // 触发异步分析（不阻塞）
@@ -315,7 +310,6 @@ export class XZXLLMGameEngine extends EventEmitter {
     
     try {
       if (this.container.has('storage')) {
-        const storage = this.container.get<StorageAdapter>('storage');
         checks.storage = true; // 简化检查
       }
       
@@ -379,7 +373,6 @@ export class XZXLLMGameEngine extends EventEmitter {
   private async doGenerateLevel(params: LevelGenerationParams): Promise<LevelStructure> {
     const startTime = Date.now();
     const storage = this.container.get<StorageAdapter>('storage');
-    const llm = this.container.get<ILLMProvider>('llm');
     const eventBus = this.container.get<TypedEventBus>('eventBus');
 
     const { playerId, sessionId } = params;

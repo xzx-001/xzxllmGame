@@ -135,8 +135,6 @@ export class LaserGenerator extends BaseMiniGameGenerator<LaserConfig> {
       Math.floor(this.interpolate(targetDifficulty, 6, 12))
     );
     
-    // 根据难度确定允许的元件类型
-    const allowedTypes = this.getAllowedTypes(targetDifficulty);
     const requiresColorMixing = targetDifficulty > 0.7;
     
     return `Generate a laser reflection puzzle configuration.
@@ -576,31 +574,6 @@ Generate only valid JSON.`;
     
     // 其他情况原路返回或吸收(简化)
     return (incidentDir + 2) % 4 as Direction;
-  }
-
-  /**
-   * 根据难度获取允许的元件类型
-   */
-  private getAllowedTypes(difficulty: number): LaserComponentType[] {
-    const basic = [
-      LaserComponentType.SOURCE,
-      LaserComponentType.TARGET,
-      LaserComponentType.MIRROR
-    ];
-    
-    if (difficulty > 0.4) {
-      basic.push(LaserComponentType.FIXED_MIRROR, LaserComponentType.BLOCK);
-    }
-    
-    if (difficulty > 0.6) {
-      basic.push(LaserComponentType.SPLITTER);
-    }
-    
-    if (difficulty > 0.8) {
-      basic.push(LaserComponentType.PORTAL, LaserComponentType.PRISM);
-    }
-    
-    return basic;
   }
 
   /**

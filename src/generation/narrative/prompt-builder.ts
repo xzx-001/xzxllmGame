@@ -163,7 +163,7 @@ Output only narrative text.`;
    * 构建高潮提示词
    */
   buildClimaxPrompt(params: ClimaxBuildParams): string {
-    const { state, playerProfile, accumulatedClues, tensionLevel } = params;
+    const { playerProfile, accumulatedClues, tensionLevel } = params;
     
     const clueText = accumulatedClues.length > 0 
       ? `Accumulated clues: ${accumulatedClues.join(', ')}` 

@@ -413,7 +413,6 @@ export class MemoryStorageAdapter extends BaseStorageAdapter {
   async query<T>(query: StorageQuery<T>): Promise<StorageItem<T>[]> {
     this.ensureInitialized();
     const results: StorageItem<T>[] = [];
-    const now = Date.now();
     
     for (const [key, item] of Array.from(this.store.entries())) {
       // 检查过期
@@ -688,8 +687,8 @@ export class MemoryStorageAdapter extends BaseStorageAdapter {
    * 取消事件订阅
    */
   off<T = unknown>(
-    event: StorageEventType | 'all',
-    handler: (event: StorageEvent<T>) => void
+    _event: StorageEventType | 'all',
+    _handler: (event: StorageEvent<T>) => void
   ): void {
     // 简化实现：目前不支持精确移除处理器
     // 如果需要精确移除，需要修改 TypedEventBus 或存储取消订阅函数

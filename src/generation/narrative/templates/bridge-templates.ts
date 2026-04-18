@@ -140,7 +140,10 @@ export class BridgeTemplates {
    * 随机选择
    */
   private randomPick<T>(array: T[]): T {
-    return array[Math.floor(Math.random() * array.length)];
+    if (array.length === 0) {
+      throw new Error('Cannot pick from empty array');
+    }
+    return array[Math.floor(Math.random() * array.length)]!;
   }
 
   /**

@@ -144,6 +144,7 @@ export class OllamaProvider extends BaseLLMProvider {
     };
 
     return {
+      text: data.response,
       content: data.response,
       model: this.currentModel,
       finishReason: data.done ? 'stop' : 'length',
@@ -218,6 +219,7 @@ export class OllamaProvider extends BaseLLMProvider {
             }
             if (data.done) {
               callbacks.onComplete({
+                text: fullContent,
                 content: fullContent,
                 model: this.currentModel,
                 finishReason: 'stop',

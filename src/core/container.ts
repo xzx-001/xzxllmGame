@@ -16,8 +16,6 @@
  */
 
 import { EventEmitter } from 'events';
-import { ILLMProvider } from '../llm/types.js';
-import { StorageAdapter } from '../memory/storage/base-storage.js';
 
 /**
  * 服务工厂函数类型

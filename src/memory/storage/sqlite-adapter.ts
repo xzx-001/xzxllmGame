@@ -644,7 +644,7 @@ export class SQLiteStorageAdapter extends BaseStorageAdapter {
       if (filter?.tags && filter.tags.length > 0) {
         // 对于每个标签，检查 tags JSON 数组是否包含该标签
         // SQLite 没有内置的JSON包含函数，使用 LIKE 近似匹配
-        const tagConditions = filter.tags.map(tag => `tags LIKE ?`);
+        const tagConditions = filter.tags.map(() => `tags LIKE ?`);
         sql += ` AND (${tagConditions.join(' OR ')})`;
         params.push(...filter.tags.map(tag => `%"${tag}"%`));
       }

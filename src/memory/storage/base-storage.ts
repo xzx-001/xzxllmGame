@@ -1175,13 +1175,13 @@ export abstract class BaseStorageAdapter implements StorageAdapter {
     if (data.observations && data.observations.length > 0) {
       await this.submitObservationsBatch(data.observations.map(obs => ({
         sessionId: obs.sessionId,
-        playerId: obs.playerId,
         observationType: obs.observationType,
         content: obs.content,
         importance: obs.importance,
-        ...(obs.rawQuote !== undefined && { rawQuote: obs.rawQuote }),
-        ...(obs.levelId !== undefined && { levelId: obs.levelId }),
-        ...(obs.sentiment !== undefined && { sentiment: obs.sentiment })
+        ...(obs.playerId !== undefined ? { playerId: obs.playerId } : {}),
+        ...(obs.rawQuote !== undefined ? { rawQuote: obs.rawQuote } : {}),
+        ...(obs.levelId !== undefined ? { levelId: obs.levelId } : {}),
+        ...(obs.sentiment !== undefined ? { sentiment: obs.sentiment } : {})
       })));
     }
     

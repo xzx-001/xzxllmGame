@@ -43,9 +43,6 @@ export class MiniGameGeneratorFactory {
   /** 生成器注册表 */
   private static registry = new Map<MiniGameType, IMiniGameGenerator>();
   
-  /** 是否已初始化默认生成器 */
-  private static initialized = false;
-
   /**
    * 注册生成器实例
    * @param generator 生成器实例
@@ -126,7 +123,6 @@ export class MiniGameGeneratorFactory {
    */
   static getSuitableTypes(
     difficulty: number, 
-    playerSkills?: string[]
   ): MiniGameType[] {
     const suitable: MiniGameType[] = [];
     
@@ -135,7 +131,6 @@ export class MiniGameGeneratorFactory {
       
       // 检查难度范围
       if (difficulty >= min && difficulty <= max) {
-        // 这里可以添加基于玩家技能的过滤逻辑
         suitable.push(type);
       }
     }
@@ -192,7 +187,6 @@ export class MiniGameGeneratorFactory {
    */
   static clear(): void {
     this.registry.clear();
-    this.initialized = false;
     console.log('[MiniGameFactory] Cleared all generators');
   }
 

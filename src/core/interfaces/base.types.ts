@@ -356,6 +356,8 @@ export interface NarrativeState {
   sessionHistory?: string[];
   /** 最后更新时间 */
   updatedAt: string;
+  /** 当前挫败感水平 0.0-1.0 */
+  frustrationLevel?: number;
 }
 
 /**
@@ -368,7 +370,7 @@ export interface DialogueObservation {
   /** 所属会话 */
   sessionId: string;
   /** 玩家 ID（关联玩家画像） */
-  playerId: string;
+  playerId?: string;
   /** 观察类型 */
   observationType: ObservationType;
   /** 观察摘要（LLM 处理后的结论） */

@@ -26,8 +26,6 @@ import * as path from 'path';
 
 // 动态导入 node-llama-cpp（可选依赖，不存在时报错）
 let llamaModule: any;
-let LlamaModel: any;
-let LlamaContext: any;
 let LlamaChatSession: any;
 let getLlama: any;
 
@@ -90,8 +88,6 @@ export class LocalLLMProvider extends BaseLLMProvider {
     try {
       llamaModule = await import('node-llama-cpp');
       getLlama = llamaModule.getLlama;
-      LlamaModel = llamaModule.LlamaModel;
-      LlamaContext = llamaModule.LlamaContext;
       LlamaChatSession = llamaModule.LlamaChatSession;
     } catch (error) {
       throw new Error(
@@ -177,6 +173,7 @@ export class LocalLLMProvider extends BaseLLMProvider {
       });
 
       return {
+        text: result,
         content: result,
         model: path.basename(this.modelInfo!.path),
         finishReason: 'stop', // 本地模型通常不区分 finish reason

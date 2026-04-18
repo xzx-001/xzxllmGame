@@ -8,12 +8,7 @@
  */
 
 import { 
-  LevelStructure, 
-  PlayerProfile, 
-  DialogueObservation,
-  AIMood,
-  MiniGameType,
-  ObservationType 
+  MiniGameType
 } from './base.types.js';
 
 /**

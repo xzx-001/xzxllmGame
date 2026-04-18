@@ -15,12 +15,11 @@ import { ILLMProvider } from '../../llm/types.js';
 import { PlayerProfile } from '../../memory/models/player-profile.js';
 import {
   AIMood,
-  NarrativeState,
-  NarrativeStateFactory
+  NarrativeState
 } from '../../memory/models/narrative-state.js';
 import { MiniGameType, MiniGameZone } from '../minigame/types.js';
 import { PromptBuilder } from './prompt-builder.js';
-import { IntroTemplates, BridgeTemplates } from './templates/index.js';
+
 
 /**
  * 叙事生成上下文
@@ -75,17 +74,9 @@ export interface NarrativeResult {
  */
 export class NarrativeGenerator {
   private promptBuilder: PromptBuilder;
-  private templates: {
-    intro: IntroTemplates;
-    bridge: BridgeTemplates;
-  };
 
   constructor() {
     this.promptBuilder = new PromptBuilder();
-    this.templates = {
-      intro: new IntroTemplates(),
-      bridge: new BridgeTemplates()
-    };
   }
 
   /**

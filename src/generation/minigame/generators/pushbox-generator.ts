@@ -16,7 +16,6 @@ import {
   MiniGameContext, 
   MiniGameZone, 
   MiniGameConfig,
-  GenerationResult,
   ValidationResult,
   Position
 } from '../types.js';
@@ -105,8 +104,6 @@ export class PushboxGenerator extends BaseMiniGameGenerator<PushboxConfig> {
       availableSize.height,
       Math.floor(this.interpolate(targetDifficulty, 6, 12))
     );
-    
-    const complexity = targetDifficulty > 0.6 ? 'complex' : 'moderate';
     
     return `You are a puzzle game designer. Generate a Sokoban-style pushbox puzzle configuration.
 

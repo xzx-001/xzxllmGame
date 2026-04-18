@@ -69,7 +69,6 @@ export interface DifficultyAdjustment {
  */
 export class DifficultyAnalyzer {
   // 历史权重配置 (越新的记录权重越高)
-  private readonly WEIGHT_DECAY = 0.9;
   
   // 难度调整上限 (防止剧烈波动)
   private readonly MAX_ADJUSTMENT = 0.25;
@@ -298,8 +297,8 @@ export class DifficultyAnalyzer {
    */
   private generateReason(
     metrics: ReturnType<DifficultyAnalyzer['calculateMetrics']>,
-    winScore: number,
-    timeScore: number,
+    _winScore: number,
+    _timeScore: number,
     emotionMult: number,
     adjustment: number
   ): string {

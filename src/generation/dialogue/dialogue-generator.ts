@@ -76,7 +76,7 @@ export class DialogueGenerator {
    * 生成完整对话树
    */
   async generateDialogue(context: DialogueContext): Promise<DialogueNode[]> {
-    const { playerProfile, narrativeState, llmProvider, maxNodes = 5 } = context;
+    const { maxNodes = 5 } = context;
     
     const nodes: DialogueNode[] = [];
     const rootNode = await this.generateNode({
@@ -133,7 +133,7 @@ export class DialogueGenerator {
     availableOptions?: number;
     parentOption?: DialogueOption;
   }): Promise<DialogueNode> {
-    const { context, speaker, parentText, depth, maxDepth, availableOptions = 3 } = params;
+    const { context, speaker, depth } = params;
     
     const prompt = this.buildNodePrompt(params);
     

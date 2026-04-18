@@ -162,9 +162,11 @@ export class OpenAIProvider extends BaseLLMProvider {
     };
 
     const choice = data.choices[0];
+    const text = choice?.message?.content || '';
     
     return {
-      content: choice?.message?.content || '',
+      text,
+      content: text,
       model: data.model,
       finishReason: this.mapFinishReason(choice?.finish_reason || 'error'),
       usage: {

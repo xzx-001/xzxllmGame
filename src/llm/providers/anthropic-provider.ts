@@ -91,8 +91,10 @@ export class AnthropicProvider extends BaseLLMProvider {
       };
     };
 
+    const text = data.content?.[0]?.text || '';
     return {
-      content: data.content?.[0]?.text || '',
+      text,
+      content: text,
       model: data.model,
       finishReason: data.stop_reason === 'end_turn' ? 'stop' : 
                     data.stop_reason === 'max_tokens' ? 'length' : 'stop',

@@ -19,7 +19,6 @@
 
 import {
   BaseStorageAdapter,
-  StorageAdapter,
   StorageOptions,
   StorageItem,
   StorageQuery,
@@ -935,7 +934,7 @@ export class RedisStorageAdapter extends BaseStorageAdapter {
 
   // ==================== 会话管理实现 ====================
 
-  async getActiveSessions(hours: number = 1): Promise<string[]> {
+  async getActiveSessions(_hours: number = 1): Promise<string[]> {
     this.ensureInitialized();
     try {
       // Redis实现：扫描最近有活动的会话键

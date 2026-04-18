@@ -7,7 +7,7 @@
  */
 
 import { PlayerProfile } from '../../memory/models/player-profile.js';
-import { NarrativeState, NarrativeStateFactory } from '../../memory/models/narrative-state.js';
+import { NarrativeState } from '../../memory/models/narrative-state.js';
 import { MiniGameZone } from '../minigame/types.js';
 import { DialogueContext } from './dialogue-generator.js';
 
@@ -34,7 +34,7 @@ export class DialogueContextBuilder {
   private params: ContextBuildParams;
   private maxNodes: number = 5;
   private forcedTopic?: string;
-  private includeHints: boolean = true;
+
 
   constructor(params: ContextBuildParams) {
     this.params = params;
@@ -57,18 +57,10 @@ export class DialogueContextBuilder {
   }
 
   /**
-   * 是否包含提示
-   */
-  setIncludeHints(include: boolean): this {
-    this.includeHints = include;
-    return this;
-  }
-
-  /**
    * 构建最终上下文
    */
   build(): DialogueContext {
-    const { playerProfile, narrativeState, llmProvider, currentGameZone } = this.params;
+    const { playerProfile, narrativeState, llmProvider } = this.params;
     
     // 确定当前话题
     const topic = this.determineTopic();

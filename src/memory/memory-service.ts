@@ -28,8 +28,7 @@ import {
   ObservationType, 
   ObservationFactory 
 } from './models/observation.js';
-import { DifficultyAnalyzer } from './analytics/difficulty-analyzer.js';
-import { SentimentAnalyzer } from './analytics/sentiment-analyzer.js';
+
 
 /**
  * 记忆服务配置
