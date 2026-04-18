@@ -1,3 +1,25 @@
 .vs/
 .claude/
 .xzxllmGame 目录结构.docx
+
+.idea/
+
+*.vscode/
+*.env
+
+
+dist/
+build/
+*.zip
+*.tar.gz
+*.7z
+*.exe
+*.dll
+*.so
+*.dylib
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.DS_Store
