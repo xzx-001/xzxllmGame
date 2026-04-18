@@ -30,6 +30,8 @@
 - **多后端兼容**：同时支持本地模型、Ollama 服务、OpenAI/Anthropic 等云端 API
 
 > 💡 **设计理念**：游戏本身负责渲染、输入、物理等核心玩法，xzxllmGame 负责"决定游戏中应该出现什么"。
+>
+> 🤖 **关于本项目**：本项目代码主要由 AI（Claude Code）辅助完成。项目中的 `AGENTS.md` 文件专为 AI 开发助手设计，用于帮助 AI 快速理解项目架构与开发规范。源代码包含详细的中文注释，旨在便于人类开发者理解、学习和后续维护升级。
 
 ---
 
@@ -138,13 +140,13 @@ const generator = MiniGameGeneratorFactory.getGenerator(MiniGameType.PUSHBOX);
 
 **内置生成器实现状态**：
 
-| 生成器 | 类型 | 状态 | 说明 |
-|--------|------|------|------|
-| 推箱子（Pushbox）| 空间规划 | ✅ 已完成 | 561 行，含死锁检测、依赖链计算 |
-| 激光反射（Laser Mirror）| 光学/角度 | ✅ 已完成 | 659 行，完整实现 |
-| 电路连接（Circuit）| 逻辑/拓扑 | ❌ 待实现 | 空文件，需创建 |
-| 滑块拼图（Sliding）| 华容道 | ❌ 待实现 | 空文件，需创建 |
-| 文字谜题（Riddle）| 纯文本推理 | ❌ 待实现 | 空文件，需创建 |
+| 生成器                   | 类型       | 状态      | 说明                           |
+| ------------------------ | ---------- | --------- | ------------------------------ |
+| 推箱子（Pushbox）        | 空间规划   | ✅ 已完成 | 561 行，含死锁检测、依赖链计算 |
+| 激光反射（Laser Mirror） | 光学/角度  | ✅ 已完成 | 659 行，完整实现               |
+| 电路连接（Circuit）      | 逻辑/拓扑  | ❌ 待实现 | 空文件，需创建                 |
+| 滑块拼图（Sliding）      | 华容道     | ❌ 待实现 | 空文件，需创建                 |
+| 文字谜题（Riddle）       | 纯文本推理 | ❌ 待实现 | 空文件，需创建                 |
 
 ---
 
@@ -220,25 +222,28 @@ xzxllmGame/
 │   │
 │   ├── 📁 api/                          # 对外接口层 —— "对外窗口"
 │   │   ├── 📁 sdk/                      # 游戏客户端 SDK（TypeScript/JavaScript 项目直接引入）
-│   │   │   ├── game-client-sdk.ts       # 主 SDK 类（776 行，完整实现）✅
-│   │   │   ├── types.ts                 # SDK 专属类型定义（372 行）✅
-│   │   │   ├── index.ts                 # SDK 模块入口（58 行）✅
+│   │   │   ├── game-client-sdk.ts       # 主 SDK 类（775 行，完整实现）✅
+│   │   │   ├── types.ts                 # SDK 专属类型定义（371 行）✅
+│   │   │   ├── index.ts                 # SDK 模块入口（57 行）✅
 │   │   │   └── adapters/                # 游戏引擎适配器
-│   │   │       ├── unity-adapter.ts     # Unity C# 项目适配辅助
-│   │   │       └── unreal-adapter.ts    # Unreal Engine 适配辅助
+│   │   │       ├── unity-adapter.ts     # Unity C# 项目适配辅助（478 行，含 C# 示例代码）✅
+│   │   │       └── unreal-adapter.ts    # Unreal Engine 适配辅助（567 行，含 C++/Blueprint 示例代码）✅
 │   │   │
 │   │   ├── 📁 http/                     # HTTP REST API（可选部署为独立服务）
-│   │   │   ├── server.ts                # [待实现] 服务器封装（空文件）
+│   │   │   ├── server.ts                # HTTP 服务器封装（393 行，基于 Node.js 原生 http 模块）✅
+│   │   │   ├── utils.ts                 # HTTP 工具函数（203 行，请求解析/响应发送/参数提取）✅
 │   │   │   ├── routes/                  # API 路由定义
-│   │   │   │   ├── level.routes.ts      # [待实现] 关卡生成接口（空文件）
-│   │   │   │   ├── player.routes.ts     # [待实现] 玩家数据接口（空文件）
-│   │   │   │   └── feedback.routes.ts   # [待实现] 反馈提交接口（空文件）
+│   │   │   │   ├── level.routes.ts      # 关卡生成接口（331 行，含生成/获取/验证/模板）✅
+│   │   │   │   ├── player.routes.ts     # 玩家数据接口（330 行，含画像/历史/统计）✅
+│   │   │   │   └── feedback.routes.ts   # 反馈提交接口（379 行，含结果提交/快速反馈/分析）✅
 │   │   │   └── middleware/              # 中间件
-│   │   │       ├── auth.ts              # API Key 认证中间件
-│   │   │       └── rate-limit.ts        # 请求限流中间件
+│   │   │       ├── auth.ts              # API Key 认证中间件（340 行，支持多源提取）✅
+│   │   │       └── rate-limit.ts        # 请求限流中间件（372 行，基于令牌桶算法）✅
 │   │   │
 │   │   └── 📁 websocket/                # WebSocket 实时接口（可选）
-│   │       └── socket-handler.ts        # 实时生成进度推送（SSE / WebSocket）
+│   │       └── socket-handler.ts        # 实时生成进度推送（401 行，支持心跳/订阅/广播）✅
+│   │
+│   │   └── server.ts                    # API 服务器主入口（265 行，整合 HTTP + WebSocket）✅
 │   │
 │   ├── 📁 utils/                        # 工具类库 —— "工具箱"
 │   │   ├── content-loader.ts            # 内容文件加载器（699 行，支持热重载、缓存、多格式）✅
@@ -671,10 +676,12 @@ const engine = createEngine({
 ### 添加自定义小游戏类型
 
 当前项目已完成的生成器：
+
 - **PushboxGenerator** (`src/generation/minigame/generators/pushbox-generator.ts`) - 561 行，参考实现
 - **LaserGenerator** (`src/generation/minigame/generators/laser-generator.ts`) - 659 行，参考实现
 
 待实现的生成器（空文件，欢迎贡献）：
+
 - **CircuitGenerator** - 电路连接谜题
 - **RiddleGenerator** - 文字谜题
 - **SlidingGenerator** - 滑块拼图（华容道）
@@ -730,18 +737,20 @@ MiniGameGeneratorFactory.register(new ChessGenerator());
 | **对话生成**     | `src/generation/dialogue/*.ts`                            | 427      | generator、context-builder 完成                            |
 | **存储适配器**   | `src/memory/storage/*.ts`                                 | 4900+    | sqlite、memory、redis 三个适配器全部完成                   |
 | **内容加载器**   | `src/utils/content-loader.ts`                             | 699      | 支持热重载、缓存、JSON/YAML                                |
+| **SDK**          | `src/api/sdk/*.ts`                                        | 1771     | game-client-sdk、types、index、Unity/Unreal 适配器全部完成 |
+| **HTTP API**     | `src/api/http/*.ts`                                       | 2048     | server、routes、middleware、utils 全部完成                 |
+| **WebSocket**    | `src/api/websocket/*.ts`                                  | 401      | socket-handler 完整实现，支持心跳/订阅/广播                |
+| **API 服务器**   | `src/api/server.ts`                                       | 265      | 整合 HTTP + WebSocket 的主入口                             |
 
 ### 待实现模块 ❌
 
 | 模块                   | 文件                     | 优先级 | 说明                           |
 | ---------------------- | ------------------------ | ------ | ------------------------------ |
-| **小游戏生成器** | `circuit-generator.ts` | 高     | 空文件，需实现电路连接谜题生成 |
-| **小游戏生成器** | `riddle-generator.ts`  | 高     | 空文件，需实现文字谜题生成     |
-| **小游戏生成器** | `sliding-generator.ts` | 中     | 空文件，需实现滑块拼图生成     |
+| **小游戏生成器** | `circuit-generator.ts` | 低     | 空文件，需实现电路连接谜题生成 |
+| **小游戏生成器** | `riddle-generator.ts`  | 低     | 空文件，需实现文字谜题生成     |
+| **小游戏生成器** | `sliding-generator.ts` | 低     | 空文件，需实现滑块拼图生成     |
 | **情感分析器**   | `emotion-analyzer.ts`  | 中     | 文件不存在，需创建             |
-| **SDK**          | `api/sdk/*.ts`         | 高     | 多个空文件，需实现客户端 SDK   |
-| **HTTP API**     | `api/http/routes/*.ts` | 高     | 路由文件均为空                 |
-| **CLI 工具**     | `cli/commands/*.ts`    | 低     | 所有命令文件均为空             |
+| **CLI 工具**     | `cli/commands/*.ts`    | 中     | 所有命令文件均为空             |
 
 ---
 
@@ -788,7 +797,7 @@ npx xzxllm-game benchmark --provider ollama --model qwen2.5:7b
 
 ### 注释规范
 
-本项目作为开源项目，要求**非常详细的注释**，以便其他开发者快速理解：
+本项目作为开源项目，要求**非常详细的注释**，以便其他开发者快速理解（因为主要由ai完成）：
 
 - 每个文件头部必须包含 `@fileoverview` JSDoc
 - 每个导出接口/类/函数必须包含 JSDoc 说明

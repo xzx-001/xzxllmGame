@@ -2,6 +2,8 @@
 
 > 本文件面向 AI 编码助手和自动化工具，描述项目结构、开发规范与关键上下文。
 > 人类开发者请优先阅读 README.md 和 README.zh-CN.md。
+>
+> **为什么有这个文件？** 本项目主要由 AI（Claude Code）辅助开发，AGENTS.md 作为 AI 的"项目记忆"，帮助 AI 在后续对话中快速理解代码库结构、设计原则和开发规范，确保代码风格一致性和架构完整性。
 
 ---
 
@@ -465,9 +467,9 @@ A:
 | `generation/narrative/` | ✅ 完成 | narrative-generator（436 行）、prompt-builder（243 行）、templates（301 行）已完成 |
 | `generation/dialogue/` | ⚠️ 部分完成 | dialogue-generator（271 行）、context-builder（156 行）已完成；**emotion-analyzer.ts 缺失** |
 | `memory/storage/` | ✅ 完成 | sqlite-adapter（1309 行）、memory-adapter（1143 行）、redis-adapter（1120 行）均已完成 |
-| `api/sdk/` | ❌ 待实现 | game-client-sdk.ts、types.ts 等框架文件为空（0 行） |
-| `api/http/` | ❌ 待实现 | routes/ 下 level.routes.ts、player.routes.ts、feedback.routes.ts 均为空（0 行） |
-| `api/websocket/` | ⚠️ 部分完成 | socket-handler.ts 框架存在，需验证实现完整性 |
+| `api/sdk/` | ✅ 完成 | game-client-sdk.ts（775 行）、types.ts（371 行）、index.ts（57 行）及适配器全部完成 |
+| `api/http/` | ✅ 完成 | server.ts（393 行）、utils.ts（203 行）、routes/、middleware/ 全部完成 |
+| `api/websocket/` | ✅ 完成 | socket-handler.ts（401 行）完整实现，支持心跳/订阅/广播 |
 | `utils/content-loader.ts` | ✅ 完成 | 内容加载器已实现（699 行），支持热重载、缓存、多格式 |
 | `cli/commands/` | ❌ 待实现 | generate.ts、verify-config.ts、db-migrate.ts、benchmark.ts、index.ts 均为空（0 行） |
 | `tests/unit/` | ⚠️ 部分完成 | llm、generation、memory 单元测试框架存在，需补充覆盖率 |
@@ -508,6 +510,20 @@ $ wc -l src/core/*.ts src/core/**/*.ts src/llm/**/*.ts src/generation/**/*.ts sr
 | Redis 适配器 | redis-adapter.ts | 1120 |
 | 内存适配器 | memory-adapter.ts | 1143 |
 | 内容加载器 | content-loader.ts | 699 |
+| SDK 主类 | game-client-sdk.ts | 775 |
+| SDK 类型 | types.ts | 371 |
+| SDK 入口 | index.ts | 57 |
+| Unity 适配器 | unity-adapter.ts | 478 |
+| Unreal 适配器 | unreal-adapter.ts | 567 |
+| HTTP 服务器 | http/server.ts | 393 |
+| HTTP 工具 | http/utils.ts | 203 |
+| 关卡路由 | level.routes.ts | 331 |
+| 玩家路由 | player.routes.ts | 330 |
+| 反馈路由 | feedback.routes.ts | 379 |
+| 认证中间件 | auth.ts | 340 |
+| 限流中间件 | rate-limit.ts | 372 |
+| WebSocket 处理器 | socket-handler.ts | 401 |
+| API 服务器 | api/server.ts | 265 |
 
 ### 待实现（空文件或不存在）
 
@@ -517,7 +533,7 @@ $ wc -l src/core/*.ts src/core/**/*.ts src/llm/**/*.ts src/generation/**/*.ts sr
 | riddle-generator.ts | 空文件 |
 | sliding-generator.ts | 空文件 |
 | emotion-analyzer.ts | 不存在 |
-| api/sdk/*.ts | 空文件 |
-| api/http/routes/*.ts | 空文件 |
+| api/sdk/*.ts | ✅ 已完成（game-client-sdk.ts、types.ts、index.ts、适配器） |
+| api/http/routes/*.ts | ✅ 已完成（level.routes.ts、player.routes.ts、feedback.routes.ts） |
 | cli/commands/*.ts | 空文件 |
 | content/**/*.json | 空文件 |

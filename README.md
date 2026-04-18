@@ -30,21 +30,23 @@
 - **Multi-backend compatibility**: Support local models, Ollama services, OpenAI/Anthropic cloud APIs simultaneously
 
 > 💡 **Design Philosophy**: The game handles rendering, input, physics, and core gameplay, while xzxllmGame decides "what should appear in the game."
+>
+> 🤖 **About This Project**: Most of the code in this project was developed with AI assistance (Claude Code). The `AGENTS.md` file is specifically designed for AI coding assistants to help them quickly understand the project architecture and development standards. The source code contains detailed Chinese comments aimed at facilitating human developers' understanding, learning, and future maintenance.
 
 ---
 
 ## ✨ Core Features
 
-| Feature | Description |
-|---------|-------------|
-| 🎮 **Multi-type content generation** | Sokoban, laser reflection, circuit connection, sliding puzzle, text riddle, and other mini-game configuration generation |
-| 🤖 **Multi-LLM backend support** | Local models (node-llama-cpp), Ollama, OpenAI, Anthropic Claude, custom OpenAI-compatible APIs |
-| 🧠 **Intelligent difficulty adjustment (DDDA)** | Dynamic difficulty system based on player history, automatically balancing challenge and frustration |
-| 🏭 **Factory pattern architecture** | Highly modular design, mini-game generators and LLM providers can be dynamically registered and extended at runtime |
-| 💾 **Flexible storage backends** | SQLite (default, zero-config), Redis (distributed), Memory (testing/development) |
-| 🎭 **Narrative wrapping system** | Wrap cold game mechanics into dynamic storylines (e.g., describing "pushing boxes" as "adjusting quantum prisms") |
-| 🌐 **Multiple access methods** | TypeScript SDK, HTTP REST API, WebSocket real-time push |
-| 🔌 **Engine-agnostic design** | Support Unity, Unreal, Cocos, and other mainstream game engines through adapter pattern |
+| Feature                                              | Description                                                                                                              |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| 🎮**Multi-type content generation**            | Sokoban, laser reflection, circuit connection, sliding puzzle, text riddle, and other mini-game configuration generation |
+| 🤖**Multi-LLM backend support**                | Local models (node-llama-cpp), Ollama, OpenAI, Anthropic Claude, custom OpenAI-compatible APIs                           |
+| 🧠**Intelligent difficulty adjustment (DDDA)** | Dynamic difficulty system based on player history, automatically balancing challenge and frustration                     |
+| 🏭**Factory pattern architecture**             | Highly modular design, mini-game generators and LLM providers can be dynamically registered and extended at runtime      |
+| 💾**Flexible storage backends**                | SQLite (default, zero-config), Redis (distributed), Memory (testing/development)                                         |
+| 🎭**Narrative wrapping system**                | Wrap cold game mechanics into dynamic storylines (e.g., describing "pushing boxes" as "adjusting quantum prisms")        |
+| 🌐**Multiple access methods**                  | TypeScript SDK, HTTP REST API, WebSocket real-time push                                                                  |
+| 🔌**Engine-agnostic design**                   | Support Unity, Unreal, Cocos, and other mainstream game engines through adapter pattern                                  |
 
 ---
 
@@ -120,6 +122,7 @@ const provider = LLMProviderFactory.createProvider({
 ```
 
 **Supported Providers**:
+
 - `local` — Local GGUF models (loaded directly via node-llama-cpp)
 - `ollama` — Ollama HTTP service (supports local/remote)
 - `openai` — OpenAI / Azure OpenAI API
@@ -139,13 +142,13 @@ const generator = MiniGameGeneratorFactory.getGenerator(MiniGameType.PUSHBOX);
 
 **Built-in Generator Implementation Status**:
 
-| Generator | Type | Status | Description |
-|-----------|------|--------|-------------|
-| Pushbox (Sokoban) | Spatial Planning | ✅ Completed | 561 lines, includes deadlock detection, dependency chain calculation |
-| Laser Mirror | Optics/Angle | ✅ Completed | 659 lines, full implementation |
-| Circuit Connection | Logic/Topology | ❌ Pending | Empty file, needs implementation |
-| Sliding Puzzle | Klotski | ❌ Pending | Empty file, needs implementation |
-| Text Riddle | Pure Text Reasoning | ❌ Pending | Empty file, needs implementation |
+| Generator          | Type                | Status       | Description                                                          |
+| ------------------ | ------------------- | ------------ | -------------------------------------------------------------------- |
+| Pushbox (Sokoban)  | Spatial Planning    | ✅ Completed | 561 lines, includes deadlock detection, dependency chain calculation |
+| Laser Mirror       | Optics/Angle        | ✅ Completed | 659 lines, full implementation                                       |
+| Circuit Connection | Logic/Topology      | ❌ Pending   | Empty file, needs implementation                                     |
+| Sliding Puzzle     | Klotski             | ❌ Pending   | Empty file, needs implementation                                     |
+| Text Riddle        | Pure Text Reasoning | ❌ Pending   | Empty file, needs implementation                                     |
 
 ---
 
@@ -221,24 +224,28 @@ xzxllmGame/
 │   │
 │   ├── 📁 api/                          # External interface layer — "External Window"
 │   │   ├── 📁 sdk/                      # Game client SDK (TypeScript/JavaScript projects)
-│   │   │   ├── game-client-sdk.ts       # [Pending] Main SDK class (empty file)
-│   │   │   ├── types.ts                 # [Pending] SDK-specific type definitions (empty file)
+│   │   │   ├── game-client-sdk.ts       # Main SDK class (775 lines, full implementation) ✅
+│   │   │   ├── types.ts                 # SDK-specific type definitions (371 lines) ✅
+│   │   │   ├── index.ts                 # SDK module entry (57 lines) ✅
 │   │   │   └── adapters/                # Game engine adapters
-│   │   │       ├── unity-adapter.ts     # Unity C# project adapter helper
-│   │   │       └── unreal-adapter.ts    # Unreal Engine adapter helper
+│   │   │       ├── unity-adapter.ts     # Unity C# adapter (478 lines, with C# examples) ✅
+│   │   │       └── unreal-adapter.ts    # Unreal Engine adapter (567 lines, with C++/Blueprint examples) ✅
 │   │   │
 │   │   ├── 📁 http/                     # HTTP REST API (optional standalone service deployment)
-│   │   │   ├── server.ts                # [Pending] Server wrapper (empty file)
+│   │   │   ├── server.ts                # HTTP server wrapper (393 lines, native Node.js http) ✅
+│   │   │   ├── utils.ts                 # HTTP utilities (203 lines, request/response helpers) ✅
 │   │   │   ├── routes/                  # API route definitions
-│   │   │   │   ├── level.routes.ts      # [Pending] Level generation route (empty file)
-│   │   │   │   ├── player.routes.ts     # [Pending] Player data route (empty file)
-│   │   │   │   └── feedback.routes.ts   # [Pending] Feedback submission route (empty file)
+│   │   │   │   ├── level.routes.ts      # Level generation routes (331 lines) ✅
+│   │   │   │   ├── player.routes.ts     # Player data routes (330 lines) ✅
+│   │   │   │   └── feedback.routes.ts   # Feedback routes (379 lines) ✅
 │   │   │   └── middleware/              # Middleware
-│   │   │       ├── auth.ts              # API Key authentication middleware
-│   │   │       └── rate-limit.ts        # Rate limiting middleware
+│   │   │       ├── auth.ts              # API Key auth middleware (340 lines, multi-source extraction) ✅
+│   │   │       └── rate-limit.ts        # Rate limiting middleware (372 lines, token bucket) ✅
 │   │   │
-│   │   └── 📁 websocket/                # WebSocket real-time interface (optional)
-│   │       └── socket-handler.ts        # Real-time generation progress push (SSE / WebSocket)
+│   │   ├── 📁 websocket/                # WebSocket real-time interface (optional)
+│   │   │   └── socket-handler.ts        # Real-time progress push (401 lines, heartbeat/subscription) ✅
+│   │   │
+│   │   └── server.ts                    # API server main entry (265 lines, HTTP + WebSocket integration) ✅
 │   │
 │   ├── 📁 utils/                        # Utilities — "Toolbox"
 │   │   ├── content-loader.ts            # Content file loader (699 lines, hot reload, caching, multi-format) ✅
@@ -671,10 +678,12 @@ const engine = createEngine({
 ### Adding Custom Mini-Game Type
 
 **Current completed generators:**
+
 - **PushboxGenerator** (`src/generation/minigame/generators/pushbox-generator.ts`) - 561 lines, reference implementation
 - **LaserGenerator** (`src/generation/minigame/generators/laser-generator.ts`) - 659 lines, reference implementation
 
 **Pending generators (empty files, contributions welcome):**
+
 - **CircuitGenerator** - Circuit connection puzzles
 - **RiddleGenerator** - Text riddles
 - **SlidingGenerator** - Sliding puzzles (Klotski)
@@ -719,29 +728,31 @@ MiniGameGeneratorFactory.register(new ChessGenerator());
 
 ### Implemented Modules ✅
 
-| Module | File | Lines | Description |
-|--------|------|-------|-------------|
-| **LLM Providers** | `src/llm/providers/*.ts` | ~2500+ | 5 providers (local/ollama/openai/anthropic/custom) all complete |
-| **Core Engine** | `src/core/engine.ts` | 660 | Main engine complete, supports full level generation flow |
-| **Mini-Game Factory** | `src/generation/minigame/factory.ts` | 222 | Factory registry complete, supports dynamic registration |
-| **Pushbox Generator** | `src/generation/minigame/generators/pushbox-generator.ts` | 561 | Includes deadlock detection, dependency chain |
-| **Laser Generator** | `src/generation/minigame/generators/laser-generator.ts` | 659 | Full implementation |
-| **Narrative Generation** | `src/generation/narrative/*.ts` | 980+ | Generator, prompt-builder, templates all complete |
-| **Dialogue Generation** | `src/generation/dialogue/*.ts` | 427 | Generator, context-builder complete |
-| **Storage Adapters** | `src/memory/storage/*.ts` | 4900+ | sqlite, memory, redis adapters all complete |
-| **Content Loader** | `src/utils/content-loader.ts` | 699 | Hot reload, caching, JSON/YAML support |
+| Module                         | File                                                        | Lines  | Description                                                       |
+| ------------------------------ | ----------------------------------------------------------- | ------ | ----------------------------------------------------------------- |
+| **LLM Providers**        | `src/llm/providers/*.ts`                                  | ~2500+ | 5 providers (local/ollama/openai/anthropic/custom) all complete   |
+| **Core Engine**          | `src/core/engine.ts`                                      | 660    | Main engine complete, supports full level generation flow         |
+| **Mini-Game Factory**    | `src/generation/minigame/factory.ts`                      | 222    | Factory registry complete, supports dynamic registration          |
+| **Pushbox Generator**    | `src/generation/minigame/generators/pushbox-generator.ts` | 561    | Includes deadlock detection, dependency chain                     |
+| **Laser Generator**      | `src/generation/minigame/generators/laser-generator.ts`   | 659    | Full implementation                                               |
+| **Narrative Generation** | `src/generation/narrative/*.ts`                           | 980+   | Generator, prompt-builder, templates all complete                 |
+| **Dialogue Generation**  | `src/generation/dialogue/*.ts`                            | 427    | Generator, context-builder complete                               |
+| **Storage Adapters**     | `src/memory/storage/*.ts`                                 | 4900+  | sqlite, memory, redis adapters all complete                       |
+| **Content Loader**       | `src/utils/content-loader.ts`                             | 699    | Hot reload, caching, JSON/YAML support                            |
+| **SDK**                  | `src/api/sdk/*.ts`                                        | 1771   | game-client-sdk, types, index, Unity/Unreal adapters all complete |
+| **HTTP API**             | `src/api/http/*.ts`                                       | 2048   | server, routes, middleware, utils all complete                    |
+| **WebSocket**            | `src/api/websocket/*.ts`                                  | 401    | socket-handler complete, heartbeat/subscription/broadcast support |
+| **API Server**           | `src/api/server.ts`                                       | 265    | HTTP + WebSocket integration entry point                          |
 
 ### Pending Modules ❌
 
-| Module | File | Priority | Description |
-|--------|------|----------|-------------|
-| **Mini-Game Generators** | `circuit-generator.ts` | High | Empty file, needs circuit connection puzzle generation |
-| **Mini-Game Generators** | `riddle-generator.ts` | High | Empty file, needs text riddle generation |
-| **Mini-Game Generators** | `sliding-generator.ts` | Medium | Empty file, needs sliding puzzle generation |
-| **Emotion Analyzer** | `emotion-analyzer.ts` | Medium | File doesn't exist, needs creation |
-| **SDK** | `api/sdk/*.ts` | High | Multiple empty files, needs client SDK |
-| **HTTP API** | `api/http/routes/*.ts` | High | Route files all empty |
-| **CLI Tools** | `cli/commands/*.ts` | Low | All command files empty |
+| Module                         | File                     | Priority | Description                                            |
+| ------------------------------ | ------------------------ | -------- | ------------------------------------------------------ |
+| **Mini-Game Generators** | `circuit-generator.ts` | Low      | Empty file, needs circuit connection puzzle generation |
+| **Mini-Game Generators** | `riddle-generator.ts`  | Low      | Empty file, needs text riddle generation               |
+| **Mini-Game Generators** | `sliding-generator.ts` | Low      | Empty file, needs sliding puzzle generation            |
+| **Emotion Analyzer**     | `emotion-analyzer.ts`  | Medium   | File doesn't exist, needs creation                     |
+| **CLI Tools**            | `cli/commands/*.ts`    | Medium   | All command files empty                                |
 
 ---
 
