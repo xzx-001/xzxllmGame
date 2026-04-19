@@ -725,36 +725,43 @@ MiniGameGeneratorFactory.register(new ChessGenerator());
 
 ---
 
-## 📊 Development Status (As of 2026-04-18)
+## 📊 Development Status (As of 2026-04-19)
 
 ### Implemented Modules ✅
 
-| Module                         | File                                                        | Lines  | Description                                                       |
-| ------------------------------ | ----------------------------------------------------------- | ------ | ----------------------------------------------------------------- |
-| **LLM Providers**        | `src/llm/providers/*.ts`                                  | ~2500+ | 5 providers (local/ollama/openai/anthropic/custom) all complete   |
-| **Core Engine**          | `src/core/engine.ts`                                      | 660    | Main engine complete, supports full level generation flow         |
-| **Mini-Game Factory**    | `src/generation/minigame/factory.ts`                      | 222    | Factory registry complete, supports dynamic registration          |
-| **Pushbox Generator**    | `src/generation/minigame/generators/pushbox-generator.ts` | 561    | Includes deadlock detection, dependency chain                     |
-| **Laser Generator**      | `src/generation/minigame/generators/laser-generator.ts`   | 659    | Full implementation                                               |
-| **Narrative Generation** | `src/generation/narrative/*.ts`                           | 980+   | Generator, prompt-builder, templates all complete                 |
-| **Dialogue Generation**  | `src/generation/dialogue/*.ts`                            | 427    | Generator, context-builder complete                               |
-| **Storage Adapters**     | `src/memory/storage/*.ts`                                 | 4900+  | sqlite, memory, redis adapters all complete                       |
-| **Content Loader**       | `src/utils/content-loader.ts`                             | 699    | Hot reload, caching, JSON/YAML support                            |
-| **SDK**                  | `src/api/sdk/*.ts`                                        | 1771   | game-client-sdk, types, index, Unity/Unreal adapters all complete |
-| **HTTP API**             | `src/api/http/*.ts`                                       | 2048   | server, routes, middleware, utils all complete                    |
-| **WebSocket**            | `src/api/websocket/*.ts`                                  | 401    | socket-handler complete, heartbeat/subscription/broadcast support |
-| **API Server**           | `src/api/server.ts`                                       | 265    | HTTP + WebSocket integration entry point                          |
-| **CLI Tools**            | `src/cli/*.ts`                                            | ~2000  | 5 commands: generate, verify-config, db-migrate, benchmark       |
+| Module                    | File                                                       | Lines   | Description                                                              |
+| ------------------------- | ---------------------------------------------------------- | ------- | ------------------------------------------------------------------------ |
+| **LLM Providers**   | `src/llm/providers/*.ts`                                 | ~3200+  | 5 providers (local/ollama/openai/anthropic/custom) all complete          |
+| **Core Engine**     | `src/core/engine.ts`                                     | 661     | Main engine complete, supports full level generation flow                |
+| **Config Manager**  | `src/core/config/*.ts`                                   | 600+    | Configuration loading, validation, environment variable mapping complete |
+| **DI Container**    | `src/core/container.ts`                                  | 283     | Dependency injection container with singleton and lifecycle management   |
+| **Event Bus**       | `src/core/event-bus.ts`                                  | 156     | Strongly-typed event system complete                                     |
+| **Mini-Game Factory** | `src/generation/minigame/factory.ts`                   | 353     | Factory registry with decorator-based auto-registration                  |
+| **Pushbox Generator** | `src/generation/minigame/generators/pushbox-generator.ts` | 561   | Deadlock detection, dependency chain calculation, path planning          |
+| **Laser Generator** | `src/generation/minigame/generators/laser-generator.ts`  | 659     | Full implementation with mirror reflection, beam splitters               |
+| **Base Generator**  | `src/generation/minigame/base-generator.ts`              | 282     | Abstract base class providing common utilities                           |
+| **Narrative Generation** | `src/generation/narrative/*.ts`                       | 1100+   | Generator, prompt-builder, templates all complete                        |
+| **Dialogue Generation** | `src/generation/dialogue/*.ts`                         | 427     | Generator, context-builder complete                                      |
+| **Player Models**   | `src/memory/models/*.ts`                                 | 800+    | PlayerProfile, NarrativeState, Observation models complete               |
+| **Storage Adapters** | `src/memory/storage/*.ts`                               | 5200+   | sqlite, memory, redis adapters all complete                              |
+| **Memory Service**  | `src/memory/memory-service.ts`                           | 200+    | Memory system facade interface                                           |
+| **Content Loader**  | `src/utils/content-loader.ts`                            | 699     | Hot reload, caching, JSON/YAML support                                   |
+| **SDK**             | `src/api/sdk/*.ts`                                       | 1771    | game-client-sdk, types, index, Unity/Unreal adapters all complete        |
+| **HTTP API**        | `src/api/http/*.ts`                                      | 2600+   | server, routes, middleware, utils all complete                           |
+| **WebSocket**       | `src/api/websocket/*.ts`                                 | 401     | socket-handler complete, heartbeat/subscription/broadcast support        |
+| **API Server**      | `src/api/server.ts`                                      | 265     | HTTP + WebSocket integration entry point                                 |
+| **CLI Tools**       | `src/cli/*.ts`                                           | ~2200   | 5 commands: generate, verify-config, db-migrate, benchmark              |
+| **Unit Tests**      | `tests/unit/**/*.test.ts`                                | 2000+   | 104 tests passing                                                        |
 
 ### Pending Modules ❌
 
-| Module                         | File                     | Priority | Description                                            |
-| ------------------------------ | ------------------------ | -------- | ------------------------------------------------------ |
-| **Mini-Game Generators** | `circuit-generator.ts` | Low      | Empty file, needs circuit connection puzzle generation |
-| **Mini-Game Generators** | `riddle-generator.ts`  | Low      | Empty file, needs text riddle generation               |
-| **Mini-Game Generators** | `sliding-generator.ts` | Low      | Empty file, needs sliding puzzle generation            |
-| **Emotion Analyzer**     | `emotion-analyzer.ts`  | Medium   | File doesn't exist, needs creation                     |
-| **CLI Tools**            | `cli/commands/*.ts`    | ✅ Completed | All 5 command files implemented (~2000 lines total) |
+| Module                    | File                           | Priority | Description                              |
+| ------------------------- | ------------------------------ | -------- | ---------------------------------------- |
+| **Mini-Game Generators** | `circuit-generator.ts`         | Medium   | Empty file, needs circuit puzzle impl    |
+| **Mini-Game Generators** | `riddle-generator.ts`          | Medium   | Empty file, needs text riddle impl       |
+| **Mini-Game Generators** | `sliding-generator.ts`         | Medium   | Empty file, needs sliding puzzle impl    |
+| **Emotion Analyzer**     | `emotion-analyzer.ts`          | Low      | File doesn't exist, create in dialogue/  |
+| **Integration Tests**    | `tests/integration/*.test.ts`  | Medium   | Module path resolution issues to fix     |
 
 ---
 

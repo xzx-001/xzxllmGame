@@ -723,36 +723,43 @@ MiniGameGeneratorFactory.register(new ChessGenerator());
 
 ---
 
-## 📊 开发状态（截至 2026-04-18）
+## 📊 开发状态（截至 2026-04-19）
 
 ### 已实现模块 ✅
 
 | 模块                   | 文件                                                        | 代码行数 | 说明                                                       |
 | ---------------------- | ----------------------------------------------------------- | -------- | ---------------------------------------------------------- |
-| **LLM 提供商**   | `src/llm/providers/*.ts`                                  | ~2500+   | 5 个提供商（local/ollama/openai/anthropic/custom）全部完成 |
-| **核心引擎**     | `src/core/engine.ts`                                      | 660      | 主引擎完成，支持完整关卡生成流程                           |
-| **小游戏工厂**   | `src/generation/minigame/factory.ts`                      | 222      | 工厂注册表完成，支持动态注册                               |
-| **推箱子生成器** | `src/generation/minigame/generators/pushbox-generator.ts` | 561      | 含死锁检测、依赖链计算                                     |
-| **激光生成器**   | `src/generation/minigame/generators/laser-generator.ts`   | 659      | 完整实现                                                   |
-| **叙事生成**     | `src/generation/narrative/*.ts`                           | 980+     | generator、prompt-builder、templates 全部完成              |
+| **LLM 提供商**   | `src/llm/providers/*.ts`                                  | ~3200+   | 5 个提供商（local/ollama/openai/anthropic/custom）全部完成 |
+| **核心引擎**     | `src/core/engine.ts`                                      | 661      | 主引擎完成，支持完整关卡生成流程                           |
+| **配置管理器**   | `src/core/config/*.ts`                                    | 600+     | 配置加载、验证、环境变量映射完成                           |
+| **依赖注入容器** | `src/core/container.ts`                                   | 280+     | DI 容器实现，支持单例和生命周期管理                        |
+| **事件总线**     | `src/core/event-bus.ts`                                   | 150+     | 强类型事件系统完成                                         |
+| **小游戏工厂**   | `src/generation/minigame/factory.ts`                      | 350+     | 工厂注册表完成，支持装饰器自动注册                         |
+| **推箱子生成器** | `src/generation/minigame/generators/pushbox-generator.ts` | 561      | 含死锁检测、依赖链计算、路径规划                           |
+| **激光生成器**   | `src/generation/minigame/generators/laser-generator.ts`   | 659      | 完整实现，支持镜面反射、分光器等                           |
+| **小游戏基类**   | `src/generation/minigame/base-generator.ts`               | 280+     | 抽象基类，提供通用工具方法                                 |
+| **叙事生成**     | `src/generation/narrative/*.ts`                           | 1100+    | generator、prompt-builder、templates 全部完成              |
 | **对话生成**     | `src/generation/dialogue/*.ts`                            | 427      | generator、context-builder 完成                            |
-| **存储适配器**   | `src/memory/storage/*.ts`                                 | 4900+    | sqlite、memory、redis 三个适配器全部完成                   |
+| **玩家画像**     | `src/memory/models/*.ts`                                  | 800+     | PlayerProfile、NarrativeState、Observation 模型完成        |
+| **存储适配器**   | `src/memory/storage/*.ts`                                 | 5200+    | sqlite、memory、redis 三个适配器全部完成                   |
+| **记忆服务**     | `src/memory/memory-service.ts`                            | 200+     | 记忆系统门面接口                                           |
 | **内容加载器**   | `src/utils/content-loader.ts`                             | 699      | 支持热重载、缓存、JSON/YAML                                |
 | **SDK**          | `src/api/sdk/*.ts`                                        | 1771     | game-client-sdk、types、index、Unity/Unreal 适配器全部完成 |
-| **HTTP API**     | `src/api/http/*.ts`                                       | 2048     | server、routes、middleware、utils 全部完成                 |
+| **HTTP API**     | `src/api/http/*.ts`                                       | 2600+    | server、routes、middleware、utils 全部完成                 |
 | **WebSocket**    | `src/api/websocket/*.ts`                                  | 401      | socket-handler 完整实现，支持心跳/订阅/广播                |
 | **API 服务器**   | `src/api/server.ts`                                       | 265      | 整合 HTTP + WebSocket 的主入口                             |
-| **CLI 工具**     | `src/cli/*.ts`                                            | ~2000    | 5 个命令全部实现：generate、verify-config、db-migrate、benchmark |
+| **CLI 工具**     | `src/cli/*.ts`                                            | ~2200    | 5 个命令全部实现：generate、verify-config、db-migrate、benchmark |
+| **单元测试**     | `tests/unit/**/*.test.ts`                                 | 2000+    | 104 个测试全部通过                                         |
 
 ### 待实现模块 ❌
 
-| 模块                   | 文件                     | 优先级 | 说明                           |
-| ---------------------- | ------------------------ | ------ | ------------------------------ |
-| **小游戏生成器** | `circuit-generator.ts` | 低     | 空文件，需实现电路连接谜题生成 |
-| **小游戏生成器** | `riddle-generator.ts`  | 低     | 空文件，需实现文字谜题生成     |
-| **小游戏生成器** | `sliding-generator.ts` | 低     | 空文件，需实现滑块拼图生成     |
-| **情感分析器**   | `emotion-analyzer.ts`  | 中     | 文件不存在，需创建             |
-| **CLI 工具**     | `cli/commands/*.ts`    | ✅ 已完成 | 全部 5 个命令实现完毕，约 2000 行 |
+| 模块                   | 文件                                                  | 优先级 | 说明                           |
+| ---------------------- | ----------------------------------------------------- | ------ | ------------------------------ |
+| **小游戏生成器** | `circuit-generator.ts`                                | 中     | 空文件，需实现电路连接谜题生成 |
+| **小游戏生成器** | `riddle-generator.ts`                                 | 中     | 空文件，需实现文字谜题生成     |
+| **小游戏生成器** | `sliding-generator.ts`                                | 中     | 空文件，需实现滑块拼图生成     |
+| **情感分析器**   | `emotion-analyzer.ts`                                 | 低     | 文件不存在，需在 dialogue/ 下创建 |
+| **集成测试**     | `tests/integration/*.test.ts`                         | 中     | 需要修复模块路径问题           |
 
 ---
 

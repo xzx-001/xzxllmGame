@@ -461,22 +461,30 @@ A:
 | 模块 | 状态 | 说明 |
 |------|------|------|
 | `llm/providers/` | ✅ 完成 | 5 个提供商已实现（local/ollama/openai/anthropic/custom） |
-| `core/engine.ts` | ✅ 完成 | 主引擎框架完成（660 行），小游戏调用已接入 factory |
-| `generation/minigame/factory.ts` | ✅ 完成 | 工厂注册表完成（222 行），支持运行时动态注册 |
+| `core/engine.ts` | ✅ 完成 | 主引擎框架完成（661 行），小游戏调用已接入 factory |
+| `core/config/` | ✅ 完成 | 配置管理器（288 行）、默认配置（100+行），支持多源配置加载 |
+| `core/container.ts` | ✅ 完成 | DI 容器（283 行），支持单例和生命周期管理 |
+| `core/event-bus.ts` | ✅ 完成 | 强类型事件总线（156 行），组件解耦通信 |
+| `generation/minigame/factory.ts` | ✅ 完成 | 工厂注册表完成（353 行），支持装饰器自动注册 |
+| `generation/minigame/base-generator.ts` | ✅ 完成 | 抽象基类（282 行），提供通用工具方法 |
 | `generation/minigame/generators/*` | ⚠️ 部分完成 | pushbox-generator（561 行）、laser-generator（659 行）已完成；circuit/riddle/sliding 生成器为空文件待实现 |
 | `generation/narrative/` | ✅ 完成 | narrative-generator（436 行）、prompt-builder（243 行）、templates（301 行）已完成 |
 | `generation/dialogue/` | ⚠️ 部分完成 | dialogue-generator（271 行）、context-builder（156 行）已完成；**emotion-analyzer.ts 缺失** |
+| `memory/models/` | ✅ 完成 | player-profile.ts（408 行）、narrative-state.ts、observation.ts 已完成 |
 | `memory/storage/` | ✅ 完成 | sqlite-adapter（1309 行）、memory-adapter（1143 行）、redis-adapter（1120 行）均已完成 |
+| `memory/memory-service.ts` | ✅ 完成 | 记忆服务门面（200+ 行） |
 | `api/sdk/` | ✅ 完成 | game-client-sdk.ts（775 行）、types.ts（371 行）、index.ts（57 行）及适配器全部完成 |
-| `api/http/` | ✅ 完成 | server.ts（393 行）、utils.ts（203 行）、routes/、middleware/ 全部完成 |
+| `api/http/` | ✅ 完成 | server.ts（737 行）、utils.ts（203 行）、routes/、middleware/ 全部完成 |
 | `api/websocket/` | ✅ 完成 | socket-handler.ts（401 行）完整实现，支持心跳/订阅/广播 |
+| `api/server.ts` | ✅ 完成 | 整合 HTTP + WebSocket 的主入口（265 行） |
 | `utils/content-loader.ts` | ✅ 完成 | 内容加载器已实现（699 行），支持热重载、缓存、多格式 |
 | `cli/commands/` | ✅ 完成 | 全部完成：generate(325行)、verify-config(445行)、db-migrate(476行)、benchmark(657行)、index(39行) |
-| `tests/unit/` | ⚠️ 部分完成 | llm、generation、memory 单元测试框架存在，需补充覆盖率 |
+| `tests/unit/` | ✅ 完成 | 104 个测试全部通过，覆盖 llm、generation、memory 模块 |
+| `tests/integration/` | ⚠️ 需修复 | 集成测试存在模块路径问题，需要修复 |
 
 ---
 
-*最后更新: 2026-04-18*
+*最后更新: 2026-04-19*
 
 ---
 
@@ -487,53 +495,59 @@ A:
 ```bash
 # 总 TypeScript 文件数
 $ find src -name "*.ts" | wc -l
-67
+75
 
 # 总代码行数
 $ find src -name "*.ts" -exec wc -l {} + | tail -1
-15000+ 行
+27444 行
+
+# 测试代码行数
+$ find tests -name "*.test.ts" -exec wc -l {} + | tail -1
+2028 行
 
 # 各模块行数统计
 $ wc -l src/core/*.ts src/core/**/*.ts src/llm/**/*.ts src/generation/**/*.ts src/memory/**/*.ts
 ```
 
-### 已完成模块行数
+### 核心模块行数
 
-| 模块 | 文件 | 行数 |
+| 模块 | 文件 | 行数 | 状态 |
+|------|------|------|------|
+| 核心引擎 | engine.ts | 661 | ✅ |
+| 配置管理器 | config-manager.ts | 288 | ✅ |
+| 依赖注入容器 | container.ts | 283 | ✅ |
+| 事件总线 | event-bus.ts | 156 | ✅ |
+| 推箱子生成器 | pushbox-generator.ts | 561 | ✅ |
+| 激光生成器 | laser-generator.ts | 659 | ✅ |
+| 小游戏工厂 | factory.ts | 353 | ✅ |
+| 小游戏基类 | base-generator.ts | 282 | ✅ |
+| 叙事生成器 | narrative-generator.ts | 436 | ✅ |
+| 对话生成器 | dialogue-generator.ts | 271 | ✅ |
+| 玩家画像模型 | player-profile.ts | 408 | ✅ |
+| SQLite 适配器 | sqlite-adapter.ts | 1309 | ✅ |
+| Redis 适配器 | redis-adapter.ts | 1120 | ✅ |
+| 内存适配器 | memory-adapter.ts | 1143 | ✅ |
+| 内容加载器 | content-loader.ts | 699 | ✅ |
+| SDK 主类 | game-client-sdk.ts | 775 | ✅ |
+| SDK 类型 | types.ts | 371 | ✅ |
+| Unity 适配器 | unity-adapter.ts | 478 | ✅ |
+| Unreal 适配器 | unreal-adapter.ts | 567 | ✅ |
+| HTTP 服务器 | http/server.ts | 737 | ✅ |
+| HTTP 工具 | http/utils.ts | 203 | ✅ |
+| 关卡路由 | level.routes.ts | 331 | ✅ |
+| 玩家路由 | player.routes.ts | 330 | ✅ |
+| 反馈路由 | feedback.routes.ts | 379 | ✅ |
+| 认证中间件 | auth.ts | 340 | ✅ |
+| 限流中间件 | rate-limit.ts | 372 | ✅ |
+| WebSocket 处理器 | socket-handler.ts | 401 | ✅ |
+| API 服务器 | api/server.ts | 265 | ✅ |
+
+### 待实现模块
+
+| 模块 | 文件 | 状态 |
 |------|------|------|
-| 核心引擎 | engine.ts | 660 |
-| 推箱子生成器 | pushbox-generator.ts | 561 |
-| 激光生成器 | laser-generator.ts | 659 |
-| 叙事生成器 | narrative-generator.ts | 436 |
-| 对话生成器 | dialogue-generator.ts | 271 |
-| SQLite 适配器 | sqlite-adapter.ts | 1309 |
-| Redis 适配器 | redis-adapter.ts | 1120 |
-| 内存适配器 | memory-adapter.ts | 1143 |
-| 内容加载器 | content-loader.ts | 699 |
-| SDK 主类 | game-client-sdk.ts | 775 |
-| SDK 类型 | types.ts | 371 |
-| SDK 入口 | index.ts | 57 |
-| Unity 适配器 | unity-adapter.ts | 478 |
-| Unreal 适配器 | unreal-adapter.ts | 567 |
-| HTTP 服务器 | http/server.ts | 393 |
-| HTTP 工具 | http/utils.ts | 203 |
-| 关卡路由 | level.routes.ts | 331 |
-| 玩家路由 | player.routes.ts | 330 |
-| 反馈路由 | feedback.routes.ts | 379 |
-| 认证中间件 | auth.ts | 340 |
-| 限流中间件 | rate-limit.ts | 372 |
-| WebSocket 处理器 | socket-handler.ts | 401 |
-| API 服务器 | api/server.ts | 265 |
-
-### 待实现（空文件或不存在）
-
-| 模块 | 状态 |
-|------|------|
-| circuit-generator.ts | 空文件 |
-| riddle-generator.ts | 空文件 |
-| sliding-generator.ts | 空文件 |
-| emotion-analyzer.ts | 不存在 |
-| api/sdk/*.ts | ✅ 已完成（game-client-sdk.ts、types.ts、index.ts、适配器） |
-| api/http/routes/*.ts | ✅ 已完成（level.routes.ts、player.routes.ts、feedback.routes.ts） |
-| cli/commands/*.ts | ✅ 已完成（~2000行，5个命令全部实现） |
-| content/**/*.json | 空文件 |
+| 电路连接生成器 | circuit-generator.ts | 📝 空文件待实现 |
+| 文字谜题生成器 | riddle-generator.ts | 📝 空文件待实现 |
+| 滑块拼图生成器 | sliding-generator.ts | 📝 空文件待实现 |
+| 情感分析器 | emotion-analyzer.ts | ❌ 文件不存在 |
+| 内容提示词 | content/prompts/*.json | 📝 空文件待填充 |
