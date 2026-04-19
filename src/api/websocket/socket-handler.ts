@@ -13,33 +13,81 @@ import type { WebSocketMessage, GenerationProgress } from '../../core/interfaces
 
 /**
  * WebSocket 客户端连接
+ *
+ * 表示一个连接到 WebSocket 服务器的客户端，包含连接状态和元数据。
  */
 interface WebSocketClient {
-  /** 连接 ID */
+  /**
+   * 连接 ID
+   *
+   * 唯一标识客户端连接，用于内部管理和日志记录。
+   */
   id: string;
-  /** WebSocket 实例 */
+  /**
+   * WebSocket 实例
+   *
+   * 底层的 WebSocket 连接对象，用于发送和接收消息。
+   */
   socket: WebSocket;
-  /** 关联的会话 ID */
+  /**
+   * 关联的会话 ID
+   *
+   * 可选字段，客户端可以通过 subscribe 消息订阅特定会话的实时更新。
+   */
   sessionId?: string;
-  /** 连接时间 */
+  /**
+   * 连接时间
+   *
+   * 客户端连接建立的时间戳。
+   */
   connectedAt: Date;
-  /** 最后 ping 时间 */
+  /**
+   * 最后 ping 时间
+   *
+   * 最后一次收到客户端 ping 消息的时间戳，用于连接超时检测。
+   */
   lastPingAt: number;
-  /** 是否已认证 */
+  /**
+   * 是否已认证
+   *
+   * 标识客户端是否已通过认证，如果 requireAuth 配置为 true，则需要认证后才能订阅会话。
+   */
   isAuthenticated: boolean;
 }
 
 /**
  * WebSocket 处理器配置
+ *
+ * 控制 WebSocket 服务器的行为，包括心跳、超时、连接限制和认证要求。
  */
 export interface WebSocketConfig {
-  /** 心跳间隔（毫秒） */
+  /**
+   * 心跳间隔（毫秒）
+   *
+   * 服务器发送 ping 消息检查客户端连接活跃性的时间间隔。
+   * @default 30000
+   */
   heartbeatInterval?: number;
-  /** 连接超时（毫秒） */
+  /**
+   * 连接超时（毫秒）
+   *
+   * 客户端无响应后连接被视为超时的时间，超时后服务器将主动关闭连接。
+   * @default 60000
+   */
   connectionTimeout?: number;
-  /** 最大连接数 */
+  /**
+   * 最大连接数
+   *
+   * 服务器允许的最大同时连接数，超过此限制的新连接将被拒绝。
+   * @default 1000
+   */
   maxConnections?: number;
-  /** 是否要求认证 */
+  /**
+   * 是否要求认证
+   *
+   * 如果为 true，客户端需要发送认证消息后才能订阅会话和接收更新。
+   * @default false
+   */
   requireAuth?: boolean;
 }
 
@@ -240,7 +288,17 @@ export class WebSocketHandler {
   }
 
   /**
-   * 处理收到的消息
+   * 处理收到的客户端消息
+   *
+   * 解析客户端发送的 JSON 消息，根据消息类型执行相应操作。
+   * 支持的消息类型：
+   * - 'ping': 心跳检测，更新最后活动时间并回复 pong
+   * - 'subscribe': 订阅特定会话的实时更新
+   * - 'unsubscribe': 取消订阅会话更新
+   * 其他类型的消息将被记录为未知消息。
+   *
+   * @param clientId 发送消息的客户端 ID
+   * @param data 原始消息数据，仅处理文本格式的 JSON 消息
    */
   private handleMessage(clientId: string, data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
     const client = this.clients.get(clientId);
@@ -310,7 +368,11 @@ export class WebSocketHandler {
   }
 
   /**
-   * 处理连接断开
+   * 处理客户端连接断开
+   *
+   * 当客户端 WebSocket 连接关闭时调用，清理客户端记录并更新统计信息。
+   *
+   * @param clientId 断开连接的客户端 ID
    */
   private handleDisconnect(clientId: string): void {
     const client = this.clients.get(clientId);
@@ -321,7 +383,13 @@ export class WebSocketHandler {
   }
 
   /**
-   * 处理连接错误
+   * 处理客户端连接错误
+   *
+   * 当客户端 WebSocket 连接发生错误时调用，记录错误信息。
+   * 注意：错误通常会导致连接自动关闭，此处仅用于日志记录。
+   *
+   * @param clientId 发生错误的客户端 ID
+   * @param error 错误事件对象
    */
   private handleError(clientId: string, error: Event): void {
     console.error(`[WebSocket] Error from client ${clientId}:`, error);
@@ -330,6 +398,12 @@ export class WebSocketHandler {
 
   /**
    * 发送消息给指定客户端
+   *
+   * 将 WebSocketMessage 格式的消息发送给特定客户端。
+   * 仅在客户端连接处于 OPEN 状态时发送，忽略已关闭或正在关闭的连接。
+   *
+   * @param clientId 目标客户端 ID
+   * @param message 要发送的消息对象，会自动序列化为 JSON 字符串
    */
   private sendToClient(clientId: string, message: WebSocketMessage): void {
     const client = this.clients.get(clientId);
@@ -345,7 +419,12 @@ export class WebSocketHandler {
   }
 
   /**
-   * 启动心跳检查
+   * 启动心跳检查定时器
+   *
+   * 定期执行以下操作：
+   * 1. 检查所有客户端的最后活动时间，关闭超时连接
+   * 2. 向所有活跃客户端发送 ping 消息，保持连接活跃
+   * 心跳间隔由 heartbeatInterval 配置控制。
    */
   private startHeartbeat(): void {
     this.heartbeatTimer = setInterval(() => {
@@ -375,6 +454,11 @@ export class WebSocketHandler {
 
   /**
    * 生成唯一的客户端 ID
+   *
+   * 使用时间戳和随机字符串生成全局唯一的客户端标识符。
+   * 格式：ws_{timestamp}_{randomString}，例如 "ws_1745089200000_abc123def"
+   *
+   * @returns 唯一的客户端 ID 字符串
    */
   private generateClientId(): string {
     return `ws_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -382,6 +466,11 @@ export class WebSocketHandler {
 
   /**
    * 获取下一个消息序列号
+   *
+   * 生成单调递增的消息序列号，用于消息排序和去重。
+   * 序列号从 1 开始，每次调用递增 1。
+   *
+   * @returns 下一个序列号整数
    */
   private getNextSequence(): number {
     return ++this.messageSequence;

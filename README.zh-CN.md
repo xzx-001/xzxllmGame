@@ -820,5 +820,5 @@ npx xzxllm-game benchmark --provider ollama --model qwen2.5:7b
 ---
 
 <p align="center">
-  Made with ❤️ by xzxllm | <a href="https://github.com/xzxllm/xzxllmGame">GitHub</a>
+  Made with ❤️ by xzx-001 | <a href="https://github.com/xzxllm/xzxllmGame">GitHub</a>
 </p>

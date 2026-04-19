@@ -19,21 +19,33 @@ type RouteHandler = (req: IncomingMessage, res: ServerResponse, engine: XZXLLMGa
 
 /**
  * 关卡结果提交数据
+ *
+ * 玩家完成或尝试关卡后提交的结果数据，用于动态难度调整和玩家画像更新。
  */
 interface LevelResultSubmission {
+  /** 会话唯一标识符，用于关联同一游戏会话中的多次关卡尝试 */
   sessionId: string;
+  /** 关卡唯一标识符，对应生成关卡时的 level.metadata.id */
   levelId: string;
+  /** 完成关卡所用的时间（秒），从开始尝试到完成/放弃 */
   completionTime: number;
+  /** 尝试次数，玩家在成功或放弃前的重试次数 */
   attempts: number;
+  /** 是否成功通关，true 表示玩家成功完成关卡目标 */
   success: boolean;
+  /** 使用的提示次数，玩家请求帮助或使用提示的次数 */
   usedHints: number;
+  /** 玩家文字反馈（可选），玩家对关卡体验的评论 */
   playerFeedback?: string;
+  /** 玩家评分（可选），1-5 星评分，表示玩家满意度 */
   rating?: number;
+  /** 行为日志（可选），记录玩家在关卡中的详细行为序列 */
   behaviorLog?: Array<{
     timestamp: number;
     event: string;
     data?: any;
   }>;
+  /** 跳过原因（可选），如果玩家跳过关卡，说明跳过的原因 */
   skipReason?: string;
 }
 
@@ -310,6 +322,12 @@ export const submitObservation: RouteHandler = async (req, res, engine) => {
 
 /**
  * 构建反馈内容文本
+ *
+ * 将 LevelResultSubmission 数据转换为适合存储和分析的自然语言描述。
+ * 包含关卡结果、时间、尝试次数、提示使用、玩家评论和评分等信息。
+ *
+ * @param data 关卡结果提交数据
+ * @returns 格式化的反馈内容文本
  */
 function buildFeedbackContent(data: LevelResultSubmission): string {
   const parts: string[] = [];
@@ -339,6 +357,13 @@ function buildFeedbackContent(data: LevelResultSubmission): string {
 
 /**
  * 计算反馈重要性
+ *
+ * 根据关卡结果数据计算反馈的重要性分数（1-10）。
+ * 重要性用于确定反馈在难度调整和玩家画像中的权重。
+ * 影响因素包括：失败、多次尝试、低评分、大量提示使用等。
+ *
+ * @param data 关卡结果提交数据
+ * @returns 重要性分数（1-10，越高越重要）
  */
 function calculateImportance(data: LevelResultSubmission): number {
   let importance = 5;

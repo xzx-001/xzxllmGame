@@ -191,6 +191,16 @@ export class UnityAdapter {
 
   /**
    * 将 SDK 关卡数据转换为 Unity 格式
+   *
+   * 此方法将引擎的标准 LevelStructure 转换为 Unity 游戏引擎可用的简化格式。
+   * 转换包括：
+   * 1. 提取地图尺寸、主题等基础信息
+   * 2. 转换玩家起始位置和出口位置坐标
+   * 3. 将小游戏配置序列化为 JSON 字符串供 Unity 解析
+   * 4. 保留叙事文本和对话树 JSON
+   *
+   * @param level 引擎生成的原始关卡数据
+   * @returns Unity 格式的关卡数据
    */
   private convertToUnityLevel(level: LevelStructure): UnityLevelData {
     const [width, height] = level.baseMap.size;
@@ -232,7 +242,12 @@ export class UnityAdapter {
   }
 
   /**
-   * 输出日志
+   * 内部日志输出方法，仅在调试模式下输出
+   *
+   * 根据 UnityAdapterConfig.debugMode 配置决定是否输出日志。
+   * 所有日志消息都带有 [UnityAdapter] 前缀以便识别。
+   *
+   * @param args 日志参数，支持多个参数
    */
   private log(...args: any[]): void {
     if (this.config.debugMode) {
@@ -241,7 +256,12 @@ export class UnityAdapter {
   }
 
   /**
-   * 输出错误
+   * 内部错误输出方法，始终输出到控制台
+   *
+   * 用于记录适配器运行中的错误和异常，帮助调试集成问题。
+   * 所有错误消息都带有 [UnityAdapter] 前缀以便识别。
+   *
+   * @param args 错误参数，支持多个参数
    */
   private error(...args: any[]): void {
     console.error('[UnityAdapter]', ...args);

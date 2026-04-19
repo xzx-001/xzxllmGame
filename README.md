@@ -822,5 +822,5 @@ This project uses [MIT License](LICENSE).
 ---
 
 <p align="center">
-  Made with ❤️ by xzxllm | <a href="https://github.com/xzxllm/xzxllmGame">GitHub</a>
+  Made with ❤️ by xzx-001| <a href="https://github.com/xzxllm/xzxllmGame">GitHub</a>
 </p>

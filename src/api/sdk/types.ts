@@ -22,6 +22,10 @@ import type {
 
 /**
  * SDK 事件回调函数类型
+ *
+ * @template T 事件数据泛型类型，默认为 any
+ * @param data 事件数据
+ * @returns void
  */
 export type SDKEventCallback<T = any> = (data: T) => void;
 
@@ -303,16 +307,24 @@ export interface SDKStats {
 
 /**
  * WebSocket 连接状态
+ *
+ * 遵循 WebSocket API 标准的状态码，用于表示底层连接的状态。
  */
 export enum WebSocketState {
+  /** 连接正在建立中 */
   CONNECTING = 0,
+  /** 连接已建立，可以通信 */
   OPEN = 1,
+  /** 连接正在关闭中 */
   CLOSING = 2,
+  /** 连接已关闭 */
   CLOSED = 3,
 }
 
 /**
  * HTTP 请求方法
+ *
+ * 支持的 HTTP 方法枚举，用于 SDK 内部请求构造。
  */
 export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -358,6 +370,9 @@ export interface RequestConfig {
 
 /**
  * 导出类型别名以便 SDK 用户使用
+ *
+ * 这些类型来自核心接口模块，为 SDK 用户提供统一的类型引用。
+ * 用户可以直接从 SDK 类型模块导入，无需额外路径。
  */
 export type {
   LevelStructure,

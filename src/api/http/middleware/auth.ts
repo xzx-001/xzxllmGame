@@ -171,7 +171,15 @@ export class AuthMiddleware {
   }
 
   /**
-   * 从请求中提取 API Key
+   * 从 HTTP 请求中提取 API Key
+   *
+   * 支持多种提取方式，按优先级顺序：
+   * 1. 自定义请求头（默认为 'x-api-key'）
+   * 2. 查询参数（仅在 allowQueryParam 为 true 时启用）
+   * 3. Authorization 头的 Bearer token 格式
+   *
+   * @param req HTTP 请求对象
+   * @returns 提取到的 API Key，如果没有找到则返回 null
    */
   private extractApiKey(req: IncomingMessage): string | null {
     const headerName = (this.config.headerName || 'x-api-key').toLowerCase();
@@ -203,6 +211,12 @@ export class AuthMiddleware {
 
   /**
    * 验证 API Key 是否有效
+   *
+   * 检查 API Key 是否在配置的有效密钥列表中。
+   * 如果 validApiKeys 数组为空，则视为开发模式，允许所有请求（并输出警告）。
+   *
+   * @param apiKey 待验证的 API Key 字符串
+   * @returns 如果 API Key 有效则返回 true，否则返回 false
    */
   private isValidApiKey(apiKey: string): boolean {
     // 如果没有配置 API Key，允许所有（开发模式警告）
@@ -216,6 +230,12 @@ export class AuthMiddleware {
 
   /**
    * 检查路径是否豁免认证
+   *
+   * 根据配置的豁免路径列表检查请求路径是否需要认证。
+   * 支持精确匹配和前缀匹配（使用 '/*' 后缀表示前缀匹配）。
+   *
+   * @param path 请求路径
+   * @returns 如果路径豁免认证则返回 true，否则返回 false
    */
   private isPathExempt(path: string): boolean {
     const exemptPaths = this.config.exemptPaths || DEFAULT_AUTH_CONFIG.exemptPaths!;
@@ -293,6 +313,12 @@ export class ApiKeyStore {
 
   /**
    * 生成新的 API Key
+   *
+   * 生成格式为 "xzx_{randomString}" 的 API Key，长度为 32 位随机字符。
+   * 生成的 Key 会存储到内存映射表中，可用于后续验证。
+   *
+   * @param metadata 可选的元数据，与 API Key 关联存储
+   * @returns 新生成的 API Key 字符串
    */
   generateKey(metadata?: any): string {
     const key = `xzx_${this.randomString(32)}`;
@@ -304,14 +330,26 @@ export class ApiKeyStore {
   }
 
   /**
-   * 验证 API Key
+   * 验证 API Key 是否存在且有效
+   *
+   * 检查给定的 API Key 是否在存储映射表中存在。
+   * 注意：此方法不检查过期时间或其他有效性约束，仅检查存在性。
+   *
+   * @param key 待验证的 API Key 字符串
+   * @returns 如果 Key 存在则返回 true，否则返回 false
    */
   validateKey(key: string): boolean {
     return this.keys.has(key);
   }
 
   /**
-   * 撤销 API Key
+   * 撤销（删除）API Key
+   *
+   * 从内存存储中移除指定的 API Key，使其立即失效。
+   * 撤销后，使用该 Key 的请求将无法通过认证。
+   *
+   * @param key 要撤销的 API Key 字符串
+   * @returns 如果 Key 存在且被成功删除则返回 true，否则返回 false
    */
   revokeKey(key: string): boolean {
     return this.keys.delete(key);
@@ -325,7 +363,13 @@ export class ApiKeyStore {
   }
 
   /**
-   * 生成随机字符串
+   * 生成指定长度的随机字符串
+   *
+   * 使用大小写字母和数字（共62个字符）生成随机字符串。
+   * 不包含特殊字符，适合用作 API Key 的一部分。
+   *
+   * @param length 生成的字符串长度
+   * @returns 随机字符串
    */
   private randomString(length: number): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

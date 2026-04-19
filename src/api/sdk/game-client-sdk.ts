@@ -709,7 +709,11 @@ export class GameClientSDK {
   }
 
   /**
-   * 记录响应时间
+   * 记录 HTTP 请求响应时间，用于计算平均响应时间统计
+   *
+   * 保留最近 100 个响应时间记录，采用滑动窗口算法更新平均值。
+   *
+   * @param time 本次请求的响应时间（毫秒）
    */
   private recordResponseTime(time: number): void {
     this.responseTimes.push(time);
@@ -722,7 +726,10 @@ export class GameClientSDK {
   }
 
   /**
-   * 更新缓存统计
+   * 更新缓存命中率统计
+   *
+   * 根据缓存命中次数和未命中次数计算当前命中率。
+   * 命中率 = hits / (hits + misses)，当总请求数为 0 时命中率为 0。
    */
   private updateCacheStats(): void {
     const total = this.stats.cacheStats.hits + this.stats.cacheStats.misses;
@@ -730,7 +737,13 @@ export class GameClientSDK {
   }
 
   /**
-   * 输出日志
+   * 内部日志输出方法，支持分级日志和控制台输出
+   *
+   * 根据 SDK 配置的日志级别过滤日志消息，低于配置级别的日志将被忽略。
+   * 调试模式（debug=true）下会输出所有级别的日志。
+   *
+   * @param level 日志级别：'debug' | 'info' | 'warn' | 'error'
+   * @param args 日志参数（支持多个，将直接传递给 console.log）
    */
   private log(level: string, ...args: any[]): void {
     if (!this.config.debug && level === 'debug') return;
@@ -746,14 +759,20 @@ export class GameClientSDK {
   }
 
   /**
-   * 休眠指定毫秒
+   * 异步休眠工具函数，用于实现重试延迟
+   *
+   * @param ms 休眠时长（毫秒）
+   * @returns Promise，在指定时间后 resolve
    */
   private sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
-   * 确保 SDK 已初始化
+   * 确保 SDK 已初始化的内部检查方法
+   *
+   * 某些核心 API 方法需要 SDK 已初始化（即已建立会话）才能调用。
+   * 此方法会检查当前会话状态，但允许健康检查等少数方法在未初始化时调用。
    */
   private ensureInitialized(): void {
     if (!this.currentSession && this.stats.activeSessions === 0) {

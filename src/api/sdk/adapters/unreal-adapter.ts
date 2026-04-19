@@ -272,7 +272,19 @@ export class UnrealAdapter {
 
   /**
    * 将 SDK 关卡数据转换为 Unreal 格式
-   * 遵循 Unreal 的命名规范（大驼峰）
+   *
+   * 此方法将引擎的标准 LevelStructure 转换为 Unreal Engine 可用的优化格式。
+   * 转换遵循 Unreal 的命名规范（大驼峰）和数据结构约定。
+   * 转换包括：
+   * 1. 提取地图尺寸、主题等基础信息
+   * 2. 转换玩家起始位置和出口位置为 FVector2D 结构
+   * 3. 将安全区域、环境元素转换为 Unreal 格式数组
+   * 4. 将小游戏配置序列化为 JSON 字符串供 Unreal 解析
+   * 5. 保留叙事文本和对话树 JSON 字符串
+   * 6. 提取预估通关时间和标签
+   *
+   * @param Level 引擎生成的原始关卡数据
+   * @returns Unreal 格式的关卡数据
    */
   private ConvertToUnrealLevel(Level: LevelStructure): UnrealLevelData {
     const [SizeX, SizeY] = Level.baseMap.size;
@@ -327,7 +339,12 @@ export class UnrealAdapter {
   }
 
   /**
-   * 输出日志
+   * 内部日志输出方法，仅在调试模式下输出
+   *
+   * 根据 UnrealAdapterConfig.debugMode 配置决定是否输出日志。
+   * 所有日志消息都带有 [UnrealAdapter] 前缀以便识别。
+   *
+   * @param args 日志参数，支持多个参数
    */
   private Log(...args: any[]): void {
     if (this.config.debugMode) {
@@ -336,7 +353,12 @@ export class UnrealAdapter {
   }
 
   /**
-   * 输出错误
+   * 内部错误输出方法，始终输出到控制台
+   *
+   * 用于记录适配器运行中的错误和异常，帮助调试集成问题。
+   * 所有错误消息都带有 [UnrealAdapter] 前缀以便识别。
+   *
+   * @param args 错误参数，支持多个参数
    */
   private Error(...args: any[]): void {
     console.error('[UnrealAdapter]', ...args);

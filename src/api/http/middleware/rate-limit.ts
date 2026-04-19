@@ -56,13 +56,30 @@ export interface RateLimitConfig {
 
 /**
  * 客户端限流状态
+ *
+ * 表示单个客户端在当前时间窗口内的请求状态。
  */
 interface ClientRateLimitState {
-  /** 剩余请求数 */
+  /**
+   * 剩余请求数
+   *
+   * 在当前时间窗口内，客户端还可以发出的请求数量。
+   * 当此值降至 0 时，后续请求将被拒绝。
+   */
   remaining: number;
-  /** 窗口重置时间 */
+  /**
+   * 窗口重置时间
+   *
+   * 时间窗口重置的时间戳（毫秒）。
+   * 当当前时间超过此值时，客户端状态将被重置。
+   */
   resetTime: number;
-  /** 总请求数 */
+  /**
+   * 总请求数
+   *
+   * 客户端在当前时间窗口内发出的总请求数（包括被拒绝的请求）。
+   * 用于统计和监控。
+   */
   totalRequests: number;
 }
 
@@ -218,6 +235,12 @@ export class RateLimitMiddleware {
 
   /**
    * 处理超出限流的情况
+   *
+   * 当客户端超出请求限制时调用，返回 429 Too Many Requests 响应。
+   * 响应中包含错误信息和重试等待时间。
+   *
+   * @param res HTTP 响应对象
+   * @param state 客户端的当前限流状态
    */
   private handleRateLimitExceeded(
     res: ServerResponse,
@@ -244,6 +267,15 @@ export class RateLimitMiddleware {
 
   /**
    * 设置限流相关的响应头
+   *
+   * 根据 RFC 标准设置限流相关的 HTTP 响应头，帮助客户端了解当前限制状态。
+   * 设置的响应头包括：
+   * - X-RateLimit-Limit: 时间窗口内的最大请求数
+   * - X-RateLimit-Remaining: 剩余请求数
+   * - X-RateLimit-Reset: 窗口重置时间（Unix 时间戳秒数）
+   *
+   * @param res HTTP 响应对象
+   * @param state 客户端的当前限流状态
    */
   private setRateLimitHeaders(
     res: ServerResponse,
@@ -256,6 +288,12 @@ export class RateLimitMiddleware {
 
   /**
    * 获取客户端标识键
+   *
+   * 生成用于标识客户端的唯一键，用于区分不同客户端的限流状态。
+   * 默认使用客户端 IP 地址和 User-Agent 的组合，也可以使用自定义的 keyGenerator。
+   *
+   * @param req HTTP 请求对象
+   * @returns 客户端标识键字符串
    */
   private getClientKey(req: IncomingMessage): string {
     if (this.config.keyGenerator) {
@@ -270,6 +308,15 @@ export class RateLimitMiddleware {
 
   /**
    * 获取客户端 IP 地址
+   *
+   * 从 HTTP 请求中提取客户端真实 IP 地址，支持代理转发场景。
+   * 检查顺序：
+   * 1. X-Forwarded-For 头（支持代理链）
+   * 2. X-Real-IP 头
+   * 3. Socket 远程地址
+   *
+   * @param req HTTP 请求对象
+   * @returns 客户端 IP 地址字符串
    */
   private getClientIp(req: IncomingMessage): string {
     const forwarded = req.headers['x-forwarded-for'];
@@ -295,6 +342,12 @@ export class RateLimitMiddleware {
 
   /**
    * 检查路径是否跳过限流
+   *
+   * 根据配置的 skipPaths 列表检查请求路径是否需要限流。
+   * 支持精确匹配和前缀匹配（使用 '/*' 后缀表示前缀匹配）。
+   *
+   * @param url 请求 URL（包含路径和查询参数）
+   * @returns 如果路径跳过限流则返回 true，否则返回 false
    */
   private shouldSkipPath(url: string): boolean {
     const path = url.split('?')[0] || ''; // 移除查询参数
@@ -308,6 +361,9 @@ export class RateLimitMiddleware {
 
   /**
    * 启动定期清理过期状态的定时器
+   *
+   * 每5分钟运行一次，清理超过重置时间一个窗口周期的客户端状态。
+   * 防止内存泄漏，确保不再活跃的客户端状态被及时清理。
    */
   private startCleanupInterval(): void {
     // 每5分钟清理一次过期的客户端状态
