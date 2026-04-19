@@ -1,25 +1,64 @@
+# IDE配置
 .vs/
 .claude/
-.xzxllmGame 目录结构.docx
-
 .idea/
 
-*.vscode/
-*.env
+# VS Code配置（允许特定的配置文件）
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
+# 环境变量
+.env
+.env.local
+.env.*.local
 
+# 构建输出
 dist/
 build/
+out/
+
+# 依赖目录（不应提交）
+node_modules/
+
+# 包管理器锁文件（应该提交，除非有特定原因）
+# !package-lock.json  # 如果需要提交package-lock.json，取消注释
+# !yarn.lock         # 如果需要提交yarn.lock，取消注释
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 数据目录
+data/
+
+# 本地模型文件
+models/
+
+# 打包文件
 *.zip
 *.tar.gz
 *.7z
+
+# 可执行文件
 *.exe
 *.dll
 *.so
 *.dylib
+
+# 日志文件
 *.log
+
+# 临时文件
 *.tmp
 *.bak
 *.swp
 *.swo
-*.DS_Store
+
+# 系统文件
+.DS_Store
+Desktop.ini
+Thumbs.db
