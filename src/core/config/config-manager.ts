@@ -88,9 +88,9 @@ export class ConfigManager {
     }
 
     // 3. 从环境变量加载（最高优先级，除了运行时配置）
-    this.loadFromEnv();
-
+    // 注意：必须先设置 loaded = true，因为 loadFromEnv 内部调用 set，set 会检查 ensureLoaded
     this.loaded = true;
+    this.loadFromEnv();
   }
 
   /**
