@@ -259,11 +259,12 @@ xzxllmGame/
 │   │
 │   ├── 📁 cli/                          # Command line tools — "DevOps Tools"
 │   │   ├── commands/                    # Subcommand implementations
-│   │   │   ├── generate.ts              # [Pending] Generate test levels (empty file)
-│   │   │   ├── verify-config.ts         # [Pending] Verify config file (empty file)
-│   │   │   ├── db-migrate.ts            # [Pending] Database migration management (empty file)
-│   │   │   └── benchmark.ts             # [Pending] LLM performance benchmark (empty file)
-│   │   └── index.ts                     # [Pending] CLI entry (empty file)
+│   │   │   ├── generate.ts              # Generate test levels (325 lines) ✅
+│   │   │   ├── verify-config.ts         # Verify config file, show env mappings (445 lines) ✅
+│   │   │   ├── db-migrate.ts            # Database migration, backup, cleanup (476 lines) ✅
+│   │   │   ├── benchmark.ts             # LLM performance benchmark, multi-provider comparison (657 lines) ✅
+│   │   │   └── index.ts                 # Command registry (39 lines) ✅
+│   │   └── index.ts                     # CLI entry using Commander.js (88 lines) ✅
 │   │
 │   └── index.ts                         # Library entry file (exports public API)
 │
@@ -743,6 +744,7 @@ MiniGameGeneratorFactory.register(new ChessGenerator());
 | **HTTP API**             | `src/api/http/*.ts`                                       | 2048   | server, routes, middleware, utils all complete                    |
 | **WebSocket**            | `src/api/websocket/*.ts`                                  | 401    | socket-handler complete, heartbeat/subscription/broadcast support |
 | **API Server**           | `src/api/server.ts`                                       | 265    | HTTP + WebSocket integration entry point                          |
+| **CLI Tools**            | `src/cli/*.ts`                                            | ~2000  | 5 commands: generate, verify-config, db-migrate, benchmark       |
 
 ### Pending Modules ❌
 
@@ -752,7 +754,7 @@ MiniGameGeneratorFactory.register(new ChessGenerator());
 | **Mini-Game Generators** | `riddle-generator.ts`  | Low      | Empty file, needs text riddle generation               |
 | **Mini-Game Generators** | `sliding-generator.ts` | Low      | Empty file, needs sliding puzzle generation            |
 | **Emotion Analyzer**     | `emotion-analyzer.ts`  | Medium   | File doesn't exist, needs creation                     |
-| **CLI Tools**            | `cli/commands/*.ts`    | Medium   | All command files empty                                |
+| **CLI Tools**            | `cli/commands/*.ts`    | ✅ Completed | All 5 command files implemented (~2000 lines total) |
 
 ---
 

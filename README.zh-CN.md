@@ -257,11 +257,12 @@ xzxllmGame/
 │   │
 │   ├── 📁 cli/                          # 命令行工具 —— "运维工具"
 │   │   ├── commands/                    # 子命令实现
-│   │   │   ├── generate.ts              # [待实现] 生成测试关卡（空文件）
-│   │   │   ├── verify-config.ts         # [待实现] 验证配置文件（空文件）
-│   │   │   ├── db-migrate.ts            # [待实现] 数据库迁移管理（空文件）
-│   │   │   └── benchmark.ts             # [待实现] LLM 性能基准测试（空文件）
-│   │   └── index.ts                     # [待实现] CLI 入口（空文件）
+│   │   │   ├── generate.ts              # 生成测试关卡（325行）✅
+│   │   │   ├── verify-config.ts         # 验证配置文件、显示环境变量映射（445行）✅
+│   │   │   ├── db-migrate.ts            # 数据库迁移、备份、清理（476行）✅
+│   │   │   ├── benchmark.ts             # LLM 性能基准测试、多提供商对比（657行）✅
+│   │   │   └── index.ts                 # 命令注册中心（39行）✅
+│   │   └── index.ts                     # CLI 入口（Commander.js，88行）✅
 │   │
 │   └── index.ts                         # 库入口文件（导出公共 API）
 │
@@ -741,6 +742,7 @@ MiniGameGeneratorFactory.register(new ChessGenerator());
 | **HTTP API**     | `src/api/http/*.ts`                                       | 2048     | server、routes、middleware、utils 全部完成                 |
 | **WebSocket**    | `src/api/websocket/*.ts`                                  | 401      | socket-handler 完整实现，支持心跳/订阅/广播                |
 | **API 服务器**   | `src/api/server.ts`                                       | 265      | 整合 HTTP + WebSocket 的主入口                             |
+| **CLI 工具**     | `src/cli/*.ts`                                            | ~2000    | 5 个命令全部实现：generate、verify-config、db-migrate、benchmark |
 
 ### 待实现模块 ❌
 
@@ -750,7 +752,7 @@ MiniGameGeneratorFactory.register(new ChessGenerator());
 | **小游戏生成器** | `riddle-generator.ts`  | 低     | 空文件，需实现文字谜题生成     |
 | **小游戏生成器** | `sliding-generator.ts` | 低     | 空文件，需实现滑块拼图生成     |
 | **情感分析器**   | `emotion-analyzer.ts`  | 中     | 文件不存在，需创建             |
-| **CLI 工具**     | `cli/commands/*.ts`    | 中     | 所有命令文件均为空             |
+| **CLI 工具**     | `cli/commands/*.ts`    | ✅ 已完成 | 全部 5 个命令实现完毕，约 2000 行 |
 
 ---
 

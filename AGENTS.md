@@ -471,7 +471,7 @@ A:
 | `api/http/` | ✅ 完成 | server.ts（393 行）、utils.ts（203 行）、routes/、middleware/ 全部完成 |
 | `api/websocket/` | ✅ 完成 | socket-handler.ts（401 行）完整实现，支持心跳/订阅/广播 |
 | `utils/content-loader.ts` | ✅ 完成 | 内容加载器已实现（699 行），支持热重载、缓存、多格式 |
-| `cli/commands/` | ❌ 待实现 | generate.ts、verify-config.ts、db-migrate.ts、benchmark.ts、index.ts 均为空（0 行） |
+| `cli/commands/` | ✅ 完成 | 全部完成：generate(325行)、verify-config(445行)、db-migrate(476行)、benchmark(657行)、index(39行) |
 | `tests/unit/` | ⚠️ 部分完成 | llm、generation、memory 单元测试框架存在，需补充覆盖率 |
 
 ---
@@ -535,5 +535,5 @@ $ wc -l src/core/*.ts src/core/**/*.ts src/llm/**/*.ts src/generation/**/*.ts sr
 | emotion-analyzer.ts | 不存在 |
 | api/sdk/*.ts | ✅ 已完成（game-client-sdk.ts、types.ts、index.ts、适配器） |
 | api/http/routes/*.ts | ✅ 已完成（level.routes.ts、player.routes.ts、feedback.routes.ts） |
-| cli/commands/*.ts | 空文件 |
+| cli/commands/*.ts | ✅ 已完成（~2000行，5个命令全部实现） |
 | content/**/*.json | 空文件 |
